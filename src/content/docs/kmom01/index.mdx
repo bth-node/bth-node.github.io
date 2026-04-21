@@ -1,71 +1,17 @@
 ---
-title: "Kmom01: Databas och SQL" 
-description: Använd en befintlig databas och kom igång med grunderna i SQL.
+title: "Kmom01: Få ordning på miljön ⚠️" 
+description: Installera den progamvara som behövs och bekanta dig med innehållet.
 revision:
-  2026-01-01: (A, mos) Första versionen. 
+  2026-04-21: (A, klw) Första versionen. 
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-{/* TODO
-* Se över hur setup.sql namngivs i de olika kursmomentens uppgifterna, använd samma upplägg/filnamn konsekvent, tillåt att göra source för att dela upp filer i fler delar.
-    * Behöver nog separera i flera filer så jag slipper skapa databasen via studenters filer
-    * Gör så det blir exakt lika i alla kmom, se hur det ser ut i kmom10
-    * Borde man göra backupfil tidigare, i tex kmom06 för att underlätta rättning i kmom10? (kan lösas av actions från och med kmom08?)
-* Se över namngivning i uppgifter och övningar kontra repot.
-    * Filer, filnamn
-    * Kommandon products versus product
-* Uppdatera template repot med övriga filer
-* Pre-hook innan man gör en tagg?
-* Lägg till actions i template repot, efter varje kmom och efter varje PR?
-* Dubbelkolla kapitelhänvisningar i senaste boken, något kapitel i kmom06 var nog fel nummer?
-* Installation av PUML i vscode vilket kräver Dot. Fundera på om ER/Chen skall  stödjas.
-* Exempelkoden för sub-queries kan behöva bli en egen artikel med fler exempel.
-*
-* Övningar som inte användes:
-    * Classic models database: Customer, orders and orderdetails, https://gitlab.com/mikael-roos/database/-/blob/main/sql/classicmodels/order-order-details/README.md?ref_type=heads
-    * Classic models database: Get going with UNION, JOIN and subquery https://gitlab.com/mikael-roos/database/-/blob/main/sql/classicmodels/join/README.md?ref_type=heads
+# Plan:
 
-* Allt som ha med namngivning av kataloger och i cli-skriptet.
-
-* Lägg till självtest i kmom04-06 för att visa hur det skall fungera.
-* Menyval "clear & ctrl-l" för att rensa skärmen i C#
-* Menyval exit & ctrl-d
-* Hur hantera puml-filerna i C# Bank? Auto generera? Ta bort?
-* Kolla vad som krävs för att ett c# program skall kunna läsa in flera kommandon i en sekvens, från tex en fil
-* schema.pdf kan vara schema.png (eller antingen eller) i kmom06
-* Fundera på hur man kan minska belastningen i kmom05 samt självtest och fundera på hur man kan göra den biten enklare.
-* När man visar secret så skall det inkludera att även visa accounts (enklare rättning)
-* `items` var tydligare vilka delar som skall synas i rapporten och om produkten ligger i inv eller marketplace. Sökning i tex `items` var tydligare med vilka delar som skall vara sökbara, tex namn.
-* Kan man i actions/ish kontrollera om redovisningstexterna är skrivna?
-* Uppdatera vilka filer som kontrolleras i kmom03 (ej de som kan läggas i src/)
-    * Lägg till i programmet så man kollar vissa filer som inte skall vara en del av repot 
-    * KOlla storleken på README så den inte är tom.
-* kmom03, förklara "Funktionstypen Task och asynkront"
-* kmom03, gör kortkommandon för products p och customers c
-* kmom03, i inlämningen, ta med något som kräver att man ritar ett diagram?
-* kmom03 förtydliga hur sökningarna skall ske så kan man ställa högre krav (inkludera även självtester som visar att det fungerar?)
-* kmom06/03, förtydliga att meny inte skall innehålla en "Klicka enter" och menyn skall inte visas automatiskt.
-* kmom03 förtydliga att tabell är nödvändigt
-* kmom04-06 förtydliga hur menyn skall se ut: https://github.com/bth-databas/forum/discussions/10
-* er-dokumentet, skriv in mer text, uppdatera mallen
-* Lägg tilll självtester i varje kmom
-* kmom10. ändra puml till något som kan visas i webbläsaren, pdf (eller png)
-* kmom10 självtest categories, behöver en cat_add för att förenkla tester
-* kmom08 behöver fixas med shelf för att göra mer automatiskt testat, namnge shelfen
-* Förtydliga självtester i samtliga kmom
-* Fixa pilupp i menyprogrammet? samt ctrl-d för avsluta
-* 
-* Förenkla, förenkla, förenkla i alla kmom. Så det blir enklare att förstå och testa. Använd färre parametrar i tabellerna, tex pris (eller använd just pris mer genomgående - ser ju bra ut i fakturan).
-* I varje redovisningstext, lägg till en bild som inkluderas i README, för att visualisera bättre.
-    * I kmom10, lägg till bilder direkt i README (eller Mermaid). Dubbelkolla vad gh pages kan generera, om bara Mermaid eller även puml.
-* I kmom10, förklara om ER-modellen i presentationsvideon, som en del, kanske i inledningen.
-* Behov av flödesdiagram (eller sekvensdiagram) för att visualisera hur uppgifter skall fungera? Bra att väva in fler diagram, även direkt in i README.
-* kmom10, när man betalar en faktura, heter det då "pay" eller "payed"?
-* kmom10 krav 4, när provar vi n2m relationer tidigare i kursen?
-* */}
-
+* Installera och få igång "frontenden" (index.html)
+* npm scripts (dev)
 
 
 Vi skall jobba med databasen MariaDB som är en relationsdatabas. Som klienter använder vi en terminalbaserad klient och en fönsterbaserad grafisk klient. Klienterna har båda sin plats i vår verktygslåda och de är bra att använda vid olika typer av tillfällen.

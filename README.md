@@ -1,4 +1,4 @@
-# Webbplats för kursen webtec
+# Webbplats för kursen node
 
 Byggd med Starlight & Astro.
 

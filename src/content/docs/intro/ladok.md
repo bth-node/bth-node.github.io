@@ -1,5 +1,5 @@
 ---
-title: Ladok
+title: Ladok ⚠️
 description: Hur mappas kursens moment mot de olika Ladok-momenten.
 sidebar:
     order: 140

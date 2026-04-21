@@ -6,7 +6,7 @@ import starlightImageZoom from 'starlight-image-zoom'
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://bth-mvc.github.io/',
+	site: 'https://bth-node.github.io/',
 	base: '/',
 	markdown: {
 		remarkPlugins: [remarkReadingTime],
@@ -16,7 +16,7 @@ export default defineConfig({
 			plugins: [
 				starlightImageZoom(),
 			],
-			title: 'Kursen mvc',
+			title: 'Kursen node',
 			favicon: 'favicon.png',
 			logo: {
 				//src: './src/assets/leaf_256x256.png',
@@ -26,10 +26,10 @@ export default defineConfig({
 				'./src/styles/dbwebb.css',
 			],
 			editLink: {
-				baseUrl: 'https://github.com/bth-mvc/bth-mvc.github.io/tree/main',
+				baseUrl: 'https://github.com/bth-node/bth-node.github.io/tree/main',
 			},
 			social: [
-    			{ icon: 'github', label: 'GitHub', href: 'https://github.com/bth-mvc/bth-mvc.github.io' }
+    			{ icon: 'github', label: 'GitHub', href: 'https://github.com/bth-node/bth-node.github.io' }
 			],
 			head: [
 				{

@@ -1,9 +1,10 @@
 ---
-title: Bedömning och betygsättning
+title: Bedömning och betygsättning ⚠️
 description: Hur sätts kursens betyg.
 sidebar:
     order: 150
 ---
+
 
 Här är de riktlinjer som används vid betygsättning. Detta dokument är också en mall som blir ett underlag till varje student så att de kan se grunderna för sitt betyg.
 

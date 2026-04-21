@@ -11,15 +11,5 @@ Kursplanen är kursens formella dokument som fastställts av högskolan. När ku
 
 ## Aktuell kursplan
 
-Från och med våren 2026 hittar du [kursplanen genom att söka på kurskoden DV1703 via BTH's hemsida](https://plan.bth.se/courses/DV1703) och kursen heter "Databasteknik".
+Från och med våren 2026 hittar du [kursplanen genom att söka på kurskoden DV1711 via BTH's hemsida](https://plan.bth.se/courses/DV1711) och kursen heter "Programmering med JavaScript och Node".
 
-
-<!--
-## Äldre versioner av kurs och kursplan
-
-Mellan höstterminen 2016 och höstterminen 2024 hade kursen kurskoden [PA1439](http://edu.bth.se/utbildning/utb_kursplaner.asp?KKurskod=PA1439) och kursen hette "Webbteknologier".
-
-Mellan höstterminen 2013 och vårterminen 2016 hade kursen kurskoden [DV1462](http://edu.bth.se/utbildning/utb_kursplaner.asp?KKurskod=DV1462) och hette "Databaser, HTML, CSS och skriptbaserad PHP-programmering".
-
-Från 2010 till och med vårterminen 2013 hade kursen kurskoden [DV1401](http://edu.bth.se/utbildning/utb_kursplaner.asp?KKurskod=DV1401) och hette "Databaser, HTML, CSS och skriptbaserad PHP-programmering".
--->
