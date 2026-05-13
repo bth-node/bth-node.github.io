@@ -1,153 +1,109 @@
 ---
-title: "Kmom04: Dashboard ⚠️"
-description: Skriv, läs och presentera meddelanden som lagras i databasen.
+title: 'kmom04: Express, REST och verktyg'
+description: Kom igång med Node.js-backendutveckling — Express-server, REST API och verktyg för kodkvalitet.
 revision:
-  2026-04-21: (A, klw) Första versionen. 
+  2026-05-13: (A, mos) Första versionen.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-# Plan:
 
-* Fixa Dashboarden 
-* routes GET /api/me
-* routes GET /api/messages
-* protected routes
+Den här veckan kommer du igång med Node.js-backendutveckling. Du skapar din första Express-server, bygger ett REST API och sätter upp verktyg för kodkvalitet — linting, formattering, CI och automatiserade tester. Veckan lägger grunden för resten av kursen.
 
-{/* TODO
-* 
-*/}
+## Kom igång
 
-Vi fortsätter ER-modellen med fokus på konceptuell modellering och vi påbörjar en större modelleringsövning.
+Ditt repo är förberett och finns på GitHub. Klona det till din dator:
 
-Vi tittar på hur transaktioner i en databas fungerar och vi tränar på SQL-kod för att hantera COMMIT och ROLLBACK i så kallade ACID transaktioner.
+```bash
+git clone git@github.com:bth-node/backend-<studentakronym>.git
+cd backend-<studentakronym>
+```
 
-Vi bygger vidare på ett terminalskript i CSharp och bygger en menydriven klient som kan flytta pengar mellan två konton databasen.
+Fortsätt sedan med README.md i repot för att installera beroenden och starta upp miljön.
 
+## Issues
 
+Arbeta igenom issues i ordning. Varje issue är ett steg framåt i applikationen.
 
-## Läs & Studera
+Du är välkommen att skriva egna kommentarer i varje issue medan du arbetar — noteringar, frågor eller korta reflektioner om vad du lärde dig. Det hjälper dig att minnas och ger läraren inblick i din process. Stäng ett issue när du anser att det är klart.
 
-Här kan du på egen hand studera och förbereda dig inför övningar och uppgifter.
+| Issue | Namn | Vad du gör |
+|---|---|---|
+| 01 | `getting-started` | Klona repot, se frontenden med `npx serve` |
+| 02 | `dev-environment` | Konfigurera ESLint, Prettier, VS Code-tillägg |
+| 02a | `ci` | Sätt upp GitHub Actions — lint på push |
+| 03 | `express` | Skapa Express-server, servea frontenden som statiska filer |
+| 04 | `rest` | Bygg REST API med HTTP-metoder och statuskoder (in-memory) |
+| 04b | `api-doc` | Lägg till `GET /api/doc` — ett självbeskrivande API-endpoint |
+| 04c | `logging` | Strukturerad loggning med Pino och pino-pretty |
+| 04d | `testing` | Integrationstester med Vitest och supertest, kodtäckning |
 
+## Föreläsningar
 
+Titta igenom föreläsningarna innan du börjar med respektive issue — de är korta (15–20 min) och ger dig den konceptuella grunden så att koden i issues:en känns logisk snarare än magisk. Det är lättare att förstå varför du skriver något när du redan sett helheten.
 
-### Föreläsning
+| Titel | Om |
+|---|---|
+| [REST och HTTP — protokollet som driver webben](https://bth-node.github.io/backend/kmom04-1-rest-http/slides.html) | Metoder, statuskoder, headers och resursorientering |
+| [Express.js — från `http` till framework](https://bth-node.github.io/backend/kmom04-2-express/slides.html) | Router, middleware-kedjan och server.js/index.js-splitten |
+| [Verktyg för kvalitet — ESLint, Prettier och CI](https://bth-node.github.io/backend/kmom04-3-tools/slides.html) | Linting, formattering och automatiserade kontroller |
+| [Testning med Vitest och supertest](https://bth-node.github.io/backend/kmom04-4-testing/slides.html) | Integrationstester, supertest och kodtäckning |
 
-Titta på följande inspelade föreläsningar. Föreläsningarna kan innehålla tips om läsanvisningar.
+## Studiematerial
 
-1. [Transaktioner i databaser - ACID](/website/laromaterial/forelasning/transaktioner) ger en översikt till begreppet transaktioner i databasen och vad ACID innebär samt en liten utläggning om låsning, prestanda och tillförlitlighet i databasen.
+**Läsning** — Läs igenom dessa innan du börjar med respektive issue. Det handlar inte om att memorera — det handlar om att få en bild av varför saker fungerar som de gör, så att koden känns logisk snarare än som magi du kopierar.
 
-1. [ER-modellering - konceptuell modellering](/website/laromaterial/forelasning/er-modellering-konceptuell-modellering/) visar hur man kan rita en ER-modell via olika konstruktioner och introducerar en del begrepp om ER som underlättar ritandet.
+| Läs innan | Titel | Varför |
+|---|---|---|
+| Issue 03 | [Express — Getting started](https://expressjs.com/en/starter/installing.html) | Den officiella introduktionen täcker routing och middleware på 15 minuter |
+| Issue 04 | [MDN — An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview) | Solid grundförståelse för request/response, metoder och headers |
+| Issue 04 | [Fielding — Architectural Styles (kap. 5, REST)](https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) | Förklarar varför REST designades som det gjordes — kortversionen räcker |
+| Issue 04d | [Vitest — Getting started](https://vitest.dev/guide/) | Snabb överblick av hur Vitest fungerar innan du skriver det första testet |
 
+**Referens** — Ha dessa öppna i en flik när du kodar. Du behöver inte läsa dem i förväg — slå upp det du behöver när du behöver det. Det är så erfarna utvecklare arbetar.
 
+| Verktyg | Länk |
+|---|---|
+| Express 5.x API | [expressjs.com/en/5x/api.html](https://expressjs.com/en/5x/api.html) |
+| HTTP statuskoder | [MDN — HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) |
+| ESLint regler | [eslint.org/docs/latest/rules](https://eslint.org/docs/latest/rules/) |
+| Prettier alternativ | [prettier.io/docs/en/options](https://prettier.io/docs/en/options.html) |
+| Vitest API | [vitest.dev/api](https://vitest.dev/api/) |
+| supertest | [github.com/ladjs/supertest](https://github.com/ladjs/supertest) |
 
-### Kurslitteratur
+## Quiz
 
-Läs följande:
+När du är klar med veckans issues gör du quizen som finns i Canvas. Den är ett snabbt sätt att stämma av att de viktigaste koncepten har fastnat.
 
+Quizen för kmom04 testar dina kunskaper om HTTP-metoder och statuskoder, vad verktygen `nodemon` och `eslint` gör, vad `"type": "module"` innebär, hur man testar ett API med Bruno och vad kodtäckning faktiskt mäter.
 
+## Redovisningstext
 
-__Transaktioner__
+Skriv dina svar i `report/kmom04.md` i ditt repo. Skriv ett par meningar om varje fråga — svaret ska visa att du förstår det du gjort, inte bara att du gjort det.
 
-1. Databasteknik
-    * Kap 24: Transaktioner
+1. Beskriv hur du strukturerade din Express-server. Varför är det en bra idé att dela upp `server.js` (app-konfiguration) och `index.js` (start och livscykel) i separata filer?
 
-1. [Boken har även en webbplats](http://www.databasteknik.se/webbkursen/) och vissa utdrag från boken finns där. Relevant för detta kmom är följande:
-    * [Transaktioner](http://www.databasteknik.se/webbkursen/transaktioner/index.html)
+2. Vad är REST? Förklara skillnaden mellan `GET`, `POST`, `PATCH` och `DELETE` och ge ett konkret exempel från ditt API på när var och en används.
 
-Det finns ytterligare ett kapitel i boken som är relaterat till transaktioner, det går utanför kursens ram men läs vid intresse.
+3. Du lade till linting och automatiska tester i CI. Vad är syftet med GitHub Actions i det här sammanhanget, och vad händer om lintern hittar ett fel?
 
-1. Databasteknik
-    * Kap 25: Hur transaktioner hanteras inuti databashanteraren
+4. Vad är ett integrationstest och hur skiljer det sig från ett enhetstest? Vad testade du i issue 04d och varför valdes just de sakerna?
 
+5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
+## Inlämning
 
-__ER-modellering__
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom04.md`.
+3. Committa, tagga och pusha:
 
-1. Databasteknik
-    * Kap 5: Relationsmodellen
-
-1. [Boken har även en webbplats](http://www.databasteknik.se/webbkursen/) och vissa utdrag från boken finns där. Relevant för detta kmom är följande:
-    * [ER-modellering i webbkursen](http://www.databasteknik.se/webbkursen/er/)
-
-
-
-### Artiklar
-
-Kika igenom följande artiklar.
-
-1. Fortsätt jobba igenom artikeln "[Kokbok för databasmodellering](https://dbwebb.se/kunskap/kokbok-for-databasmodellering)", den ger dig processen du skall följa. I detta kmom handlar det främst om att fokusera på konceptuell modellering.
-
-
-{/*
-### Ai som lärare (instuderingsfrågor)
-
-Här finns ett antal instuderingsfrågor som hjälper dig att finna information på egen hand för att träna på de koncept som är relevanta för detta kmom.
-
-<details>
-<summary>Instuderingsfrågor</summary>
-
-1. 
-
-Här är en [utskrift av när en frågesession genomförts](https://chatgpt.com/share/68bafa23-4b84-8005-a745-451d43258c9a). Dina svar kan skifta från de som visas. Var alltid kritisk till dina källor.
-
-</details>
-
-
-*/}
-
-## Övningar & Uppgifter
-
-Övningar är träning inför uppgifterna. Uppgifter skall utföras och redovisas.
-
-
-
-### Övningar
-
-Jobba igenom övningarna, de förbereder dig inför uppgifterna.
-
-1. Jobba igenom övningen "[Transaktioner i databas](/website/laromaterial/ovning/transaktioner/)" för att lära dig grunderna i hur du använder transaktioner i databaser.
-
-1. Jobba igenom övningen "[CSharp med transaktioner](/website/laromaterial/ovning/csharp-transaction/)" för att lära dig hur du använder transaktioner mot databasen från ett CSharp program.
-
-
-{/*
-Skapa en egen databas och lek runt (eller i kmom03)
--------------------------
-
-Vi leker runt och gör CREATE DATABASE/TABLE, SELECT, INSERT, UPDATE, DELETE, DROP.
-
-* [Get going with a database and SQL](https://gitlab.com/mikael-roos/database/-/tree/main/sql/ladok)
-
-*/}
-
-
-
-### Uppgifter
-
-Följande uppgifter skall utföras och resultatet skall redovisas.
-
-1. Jobba igenom uppgiften "[Uppgift: CSharp bank (kmom04)](/website/laromaterial/uppgift/kmom04-csharp/)" där du får jobba med transaktioner.
-
-1. Jobba igenom uppgiften "[Uppgift: ER-modellering - konceptuell (kmom04)](/website/laromaterial/uppgift/kmom04-er-konceptuell/)".
-
-
-
-## Resultat & Redovisning
-
-Läs [instruktionen om hur du skall redovisa](/website/laromaterial/instruktion/resultat-och-redovisning).
-
-Se till att följande frågor besvaras i din redovisningstext i din rapportsida.
-
-* Hur gick det att förstå konceptet transaktioner i databas?
-
-* Berätta hur det gick att lösa uppgiften med C#-programmet. Var det något som var svårt eller utmanande? Hur ser du på din kod och förbättringspotential kring den?
-
-* Berätta om ER-modelleringen så här långt i kursen, är modelleringsbiten något som hjälper din förståelse för hur databasen byggs upp?
-
-* Vilken är din TIL för detta kmom?
+```bash
+git add report/kmom04.md
+git commit -m "Add kmom04 report"
+git tag kmom04
+git push origin main --tags
+```
 
 
 
@@ -164,25 +120,12 @@ Följande är en plan för hur lärarteamet _kan_ lägga upp genomgångarna unde
 
 Första timmen:
 
-* Övning med transaktioner
-* Visa hur man jobbar med transaktioner i C#.
+* 
 
 Andra timmen:
 
-* Visa hur man bygger två tabeller och en kopplingstabell med PK och FK.
-* Dels account-tabell som delas upp i delar och dels exempel i classicmodels.
+* 
 
-
-
-### Onsdag
-
-Första timmen:
-
-* ER-modellering, fokus konceptuell med ett exempel 
-
-Andra timmen:
-
-* Stöd för uppgiften med ER-modellering (konceptuell)
 
 
 ### Torsdag

@@ -1,125 +1,90 @@
 ---
-title: "Kmom06: AI i chatten ⚠️"
-description: Lägg till funktionalitet för att byta till AI i chatten.
+title: 'kmom06: Meddelanden och realtid'
+description: Bygg meddelandesystemets fulla CRUD och lägg till realtidsfunktioner med Socket.io och Server-Sent Events.
 revision:
-  2026-04-21: (A, klw) Första versionen. 
+  2026-05-13: (A, mos) Första versionen.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-# Plan:
 
-* Lägg till alternativet @ai för att få svar av ai i chatten.
-* Ändra AI beteende med @changeai eller liknande.
-* Fler alternativ för en bättre chatupplevelse? extrauppgift?
+Den sista veckan bygger vidare på autentiseringen och lägger till meddelandesystemets fulla CRUD samt realtidsfunktioner. Du implementerar ägarskyddad redigering och radering av meddelanden, live-chatt via Socket.io och en kontinuerlig ström av nya meddelanden via Server-Sent Events. I slutet är applikationen komplett och kan köras av flera inloggade användare i realtid.
 
-{/* TODO
-* UNION (borde skapa övning på detta?)
-* INSERT ON DUPLICATE KEY UPDATE? (borde skapa övning på denna?)
-* OUTER JOIN product/order/orderdetails (borde skapa övning på denna?)
-*/}
+## Issues
 
-Vi slutför ER-modellen med fokus på fysisk modellering. Vi skapar SQL-kod som skapar databasens schema.
+| Issue | Namn | Vad du gör |
+|---|---|---|
+| 07b | `messages` | Message-modell, `GET /api/messages` och `POST /api/messages` |
+| 07c | `messages-edit` | `PATCH /api/messages/:id` och `DELETE /api/messages/:id` |
+| 08 | `socketio` | Socket.io på HTTP-servern, join/message/disconnect-events |
+| 09 | `sse` | `GET /api/messages/stream` med SSE, EventSource i frontenden |
 
-Vi jobbar vidare med hur man programmerar i databasen med hjälp av triggers.
+### Valfria issues
 
+| Issue | Namn | Vad du gör |
+|---|---|---|
+| 100 | `pwa-install` | Gör appen installerbar som PWA |
+| 101 | `ngrok` | Exponera din lokala server publikt via ngrok |
+| 102 | `ci` (avancerad) | Konfigurera branch protection rules på GitHub |
+| 103 | `testing` (avancerad) | Integrationstester mot en riktig MongoDB-instans |
 
+## Föreläsningar
 
-## Läs & Studera
+Realtid är ett nytt tankesätt jämfört med vanliga HTTP-anrop — titta på föreläsningarna om Socket.io och SSE innan du ger dig på de issues:en. De förklarar varför vanlig HTTP inte räcker och hur de två teknikerna skiljer sig åt, vilket gör det lättare att välja rätt verktyg och förstå koden du skriver.
 
-Här kan du på egen hand studera och förbereda dig inför övningar och uppgifter.
+| Titel | Om |
+|---|---|
+| [CRUD mot MongoDB — ägarskapsskydd och validering](https://bth-node.github.io/backend/kmom06-1-crud/slides.html) | Koppla meddelanden till användare och verifiera ägarskap |
+| [Socket.io — realtidskommunikation med WebSockets](https://bth-node.github.io/backend/kmom06-2-socketio/slides.html) | Rooms, events och skillnaden mot vanliga HTTP-anrop |
+| [Server-Sent Events — enkla realtidsströmmar](https://bth-node.github.io/backend/kmom06-3-sse/slides.html) | SSE-formatet, EventSource och när SSE passar bättre än WebSockets |
 
+## Studiematerial
 
+**Läsning** — Läs igenom dessa innan du börjar med respektive issue. Det handlar inte om att memorera — det handlar om att få en bild av varför saker fungerar som de gör, så att koden känns logisk snarare än som magi du kopierar.
 
-### Föreläsning
+| Läs innan | Titel | Varför |
+|---|---|---|
+| Issue 08 | [Socket.io — What Socket.io is](https://socket.io/docs/v4/index.html) | Förklarar hur Socket.io skiljer sig från raw WebSockets och varför det finns |
+| Issue 08 | [MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) | Valfri bakgrundsläsning — hjälper att förstå vad Socket.io abstraherar bort |
+| Issue 09 | [MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) | Täcker SSE-formatet, EventSource och automatisk reconnect på ca 10 minuter |
 
-Titta på följande inspelade föreläsningar. Föreläsningarna kan innehålla tips om läsanvisningar.
+**Referens** — Ha dessa öppna i en flik när du kodar. Du behöver inte läsa dem i förväg — slå upp det du behöver när du behöver det. Det är så erfarna utvecklare arbetar.
 
-1. [Trigger i databasen](/website/laromaterial/forelasning/trigger) om konceptet "programmera i databasen" och hur triggers passar in i den möjligheten.
+| Verktyg | Länk |
+|---|---|
+| Socket.io — Server API | [socket.io/docs/v4/server-api](https://socket.io/docs/v4/server-api/) |
+| Socket.io — Client API | [socket.io/docs/v4/client-api](https://socket.io/docs/v4/client-api/) |
+| MDN — EventSource | [MDN — EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) |
+| MDN — Using SSE | [MDN — Using server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) |
 
+## Quiz
 
+När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-### Kurslitteratur
+Quizen för kmom06 testar om du kan skilja på statuskod 401 och 403, vad Socket.io är och vilken transportmekanism det föredrar, hur en SSE-ström fungerar och skiljer sig från WebSockets, samt varför chatthistoriken i det här projektet inte är persistent.
 
-Läs följande:
+## Redovisningstext
 
-1. Databasteknik
-    * Kap 16: Aktiva databaser och triggers
-    * Kap 8: Mer om SQL: Aggregatfunktioner, null-värden, yttre join (främst delen med yttre join)
+Skriv dina svar i `report/kmom06.md` i ditt repo.
 
+1. Du implementerade `PATCH` och `DELETE` för meddelanden med ägarskyddskontroll. Varför räcker det inte att bara kolla att användaren är inloggad — vad mer måste kontrolleras?
 
+2. Beskriv hur Socket.io används i ditt projekt. Vad händer när en användare ansluter, skickar ett meddelande och kopplar från?
 
-### Artiklar
+3. Vad är Server-Sent Events och hur skiljer det sig från Socket.io? I vilka situationer är SSE ett bättre val?
 
-Kika igenom följande artiklar.
+4. Reflektera över projektet som helhet: vilken del var svårast att förstå och varför? Vad skulle du göra annorlunda om du byggde det igen?
 
-1. I manualen för MariaDB kan du läsa om triggers, det är främst följande kapitel som är relevanta, bekanta dig med dem, du kommer att träna på begreppen i kommande övningar.
-    * [Triggers](https://mariadb.com/docs/server/server-usage/triggers-events/triggers)
+5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
-1. Fortsätt jobba igenom artikeln "[Kokbok för databasmodellering](https://dbwebb.se/kunskap/kokbok-for-databasmodellering)", den ger dig processen du skall följa. I detta kmom handlar det främst om att fokusera på fysisk modellering.
+## Inlämning
 
-
-
-{/*
-### Ai som lärare (instuderingsfrågor)
-
-Här finns ett antal instuderingsfrågor som hjälper dig att finna information på egen hand för att träna på de koncept som är relevanta för detta kmom.
-
-<details>
-<summary>Instuderingsfrågor</summary>
-
-1. 
-
-Här är en [utskrift av när en frågesession genomförts](https://chatgpt.com/share/68bafa23-4b84-8005-a745-451d43258c9a). Dina svar kan skifta från de som visas. Var alltid kritisk till dina källor.
-
-</details>
-
-*/}
-
-
-
-## Övningar & Uppgifter
-
-Övningar är träning inför uppgifterna. Uppgifter skall utföras och redovisas.
-
-
-
-### Övningar
-
-Jobba igenom övningarna, de förbereder dig inför uppgifterna.
-
-1. Jobba igenom "[Övning: Triggers i databas](/website/laromaterial/ovning/triggers/)" för att lära dig om triggers och vad du kan göra med dem.
-
-
-
-### Uppgifter
-
-Följande uppgifter skall utföras och resultatet skall redovisas.
-
-1. Jobba igenom "[Uppgift: CSharp bank (kmom06)](/website/laromaterial/uppgift/kmom06-csharp/)" för att lära dig om triggers och vad du kan göra med dem.
-
-1. Jobba igenom uppgiften "[Uppgift: ER-modellering - fysisk (kmom06)](/website/laromaterial/uppgift/kmom06-er-fysisk/)".
-
-1. När du är helt klar med detta kursmomentet (och kmom04, kmom05) så lämnar du in genom att göra en pull request (PR) mot din branch `bth/submit/kmom06`. Om du behöver hjälp med att göra en PR så läser du [instruktionen om hur du gör en PR i kmom03](/website/laromaterial/instruktion/gor-en-pr-for-kmom03/).
-
-
-
-## Resultat & Redovisning
-
-Läs [instruktionen om hur du skall redovisa](/website/laromaterial/instruktion/resultat-och-redovisning).
-
-Se till att följande frågor besvaras i din redovisningstext i din rapportsida.
-
-* Hur gick det att komma igång med triggers?
-* Hur är din syn på att "programmera" med triggers i databasen, jämför med att skriva motsvarande kod i klienten eller i en lagrad procedur?
-* Skriv ett kort stycke (2-5 meningar) om triggers där du förklarar begreppen (fördel, nackdel, användningsområde) för en som inte är insatt.
-
-* Hur vill du sammanfatta ditt arbete med ER-uppgiften, nu när du är klar med den efter tre veckors arbete? Blev det en bra databas?
-
-* Vilken är din TIL för detta kmom?
-
-
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom06.md`.
+3. Committa och pusha till `main`.
+4. Öppna en pull request från `main` till `bth/submit/kmom06` i ditt repo.
+5. Inkludera din redovisningstext i PR-beskrivningen.
 
 ## Kommentarer & Noteringar
 
@@ -134,21 +99,12 @@ Följande är en plan för hur lärarteamet _kan_ lägga upp genomgångarna unde
 
 Första timmen:
 
-* Övning med triggers, hur kan en loggtabell fungera?
+* 
 
 Andra timmen:
 
-* UNION
-* JOIN product, order, orderrows
-* OUTER JOIN
+* 
 
-
-### Onsdag
-
-* ER-modellering, fokus fysisk med ett exempel 
-* Gör en delmängd av biblioteket och testa först
-* Gå igenom biblioteket
-* Stöd för uppgiften med ER-modellering (fysisk)
 
 
 ### Torsdag

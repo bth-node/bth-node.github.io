@@ -1,152 +1,88 @@
 ---
-title: "Kmom05: Chat med socket.io (realtid) ⚠️"
-description: Lär dig backenddelen med socketprogrammering.
+title: 'kmom05: Databas och autentisering'
+description: Koppla applikationen till MongoDB och bygg ett komplett autentiseringssystem med bcrypt, JWT och httpOnly-cookies.
 revision:
-  2026-01-01: (A, mos) Första versionen. 
+  2026-05-13: (A, mos) Första versionen.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-# Plan:
 
-* Få igång chatten med hjälp av socket.io
+Den här veckan kopplar du applikationen till en riktig databas och bygger ett komplett autentiseringssystem. Du lär dig hur MongoDB och Mongoose fungerar, hur lösenord hanteras säkert med bcrypt och hur JWT används för att utfärda och verifiera sessioner via httpOnly-cookies. Veckan avslutas med att du skyddar de första routes med ett auth-middleware.
 
-{/* TODO
-* inbyggda integritetsregler?
-* Kan tid flyttas till ett kmom tidigare?
-* OUTER JOIN
+## Issues
 
-TILL KOMMANDE KMOM:
+| Issue | Namn | Vad du gör |
+|---|---|---|
+| 05 | `mongodb` | Koppla MongoDB med Mongoose, skapa User-modell, bygg `GET /api/users` |
+| 06 | `register` | Hasha lösenord med bcrypt, utfärda JWT, `POST /auth/register` |
+| 06b | `login` | Verifiera inloggning, `POST /auth/login` och `POST /auth/logout`, seed-skript |
+| 07 | `middleware` | Bygg `authMiddleware`, skydda routes, implementera `GET /api/me` |
 
-* Serietabeller med tävling, utöka banken
-* Användare inloggning, koppling avatar till user, utöka banken
-* Skapa användare, tidsstämplar
-* (Order, lagerhantering, fakturering)
+## Föreläsningar
 
-*/}
+Den här veckan introduceras flera koncept som är nya och tätt sammankopplade — databaser, lösenordssäkerhet, tokens och cookies hänger ihop. Titta igenom föreläsningarna i ordning innan du startar varje issue. De tar 15–20 minuter styck och hjälper dig att se sambanden innan du möter dem i koden.
 
-Vi fortsätter med ER-modellen och översätter den konceptuella modellen till en logisk modell som är anpassad för relationsdatabaser.
+| Titel | Om |
+|---|---|
+| [MongoDB och Mongoose — dokumentdatabaser i Node.js](https://bth-node.github.io/backend/kmom05-1-mongodb/slides.html) | Scheman, modeller och CRUD mot en collection |
+| [Lösenord och säkerhet — bcrypt och hashing](https://bth-node.github.io/backend/kmom05-2-bcrypt/slides.html) | Salt, hashing och varför lösenord aldrig sparas i klartext |
+| [JWT och cookies — stateless autentisering](https://bth-node.github.io/backend/kmom05-3-jwt/slides.html) | Token-struktur, httpOnly-cookies och stateless auth |
+| [Middleware i Express — autentisering i kedjan](https://bth-node.github.io/backend/kmom05-4-middleware/slides.html) | `next()`, auth-middleware och ordningen i kedjan |
 
-Vi tittar på hur man kan programmera i en databas med lagrade procedurer. Dessa konstruktioner ger oss ökade möjligheter att formulera vår SQL-kod i mer avancerade programmeringskonstruktioner.
+## Studiematerial
 
-Lagrade procedurer ger oss möjligheten till inkapsling av SQL-koden och att vi kan publicera ett API som är tillgängligt till de klienter som vill åt databasen. Detta gör att databaskoden och dess interna representation kan skyddas från klienterna i C# som enbart jobbar mot databasen via ett API bestående av lagrade procedurer.
+**Läsning** — Läs igenom dessa innan du börjar med respektive issue. Det handlar inte om att memorera — det handlar om att få en bild av varför saker fungerar som de gör, så att koden känns logisk snarare än som magi du kopierar.
 
+| Läs innan | Titel | Varför |
+|---|---|---|
+| Issue 05 | [MDN — Introduction to databases](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Website_databases) | Ger kontext till varför vi behöver en databas och hur dokumentdatabaser skiljer sig från SQL |
+| Issue 05 | [Mongoose — Getting started](https://mongoosejs.com/docs/index.html) | Den officiella quickstart visar schema, model och grundläggande queries |
+| Issue 06 | [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) | Förklarar varför bcrypt är rätt val och vad som händer när det görs fel |
+| Issue 06 | [jwt.io — Introduction to JSON Web Tokens](https://jwt.io/introduction) | Visuell förklaring av token-strukturen — header, payload och signatur |
 
+**Referens** — Ha dessa öppna i en flik när du kodar. Du behöver inte läsa dem i förväg — slå upp det du behöver när du behöver det. Det är så erfarna utvecklare arbetar.
 
+| Verktyg | Länk |
+|---|---|
+| Mongoose API | [mongoosejs.com/docs/api](https://mongoosejs.com/docs/api/model.html) |
+| bcryptjs | [npmjs.com/package/bcryptjs](https://www.npmjs.com/package/bcryptjs) |
+| jsonwebtoken | [npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) |
+| MDN — Set-Cookie | [MDN — Set-Cookie header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie) |
 
-## Läs & Studera
+## Quiz
 
-Här kan du på egen hand studera och förbereda dig inför övningar och uppgifter.
+När du är klar med veckans issues gör du quizen som finns i Canvas.
 
+Quizen för kmom05 testar om du förstår vad MongoDB är för typ av databas, hur ett Mongoose-schema fungerar, varför lösenord hashas innan de sparas, vad en JWT innehåller, varför `httpOnly`-flaggan är viktig och vad `bcrypt.compare()` faktiskt gör.
 
+## Redovisningstext
 
-### Föreläsning
+Skriv dina svar i `report/kmom05.md` i ditt repo.
 
-Titta på följande inspelade föreläsningar. Föreläsningarna kan innehålla tips om läsanvisningar.
+1. Beskriv hur du kopplade applikationen till MongoDB. Vad är en Mongoose-modell och vad används den till i ditt projekt?
 
-1. [Tidstämplar i databastabell](/website/laromaterial/forelasning/tidsstamplar) visar hur tidstämplar kan fungera i en databastabell och hur de kan få sitt värde per automatik.
+2. Förklara hur lösenordshantering fungerar i din implementation: vad händer när en användare registrerar sig, och vad händer när de loggar in? Varför sparas aldrig lösenordet i klartext?
 
-1. [Lagrade procedurer och programmera i databasen](/website/laromaterial/forelasning/lagrade-procedurer) introducerar framförallt hur man jobbar med lagrade procedurer i databasen för att kombinera variabel, SQL och mer sedvanliga programmeringskonstruktioner.
+3. Vad är en JWT och vad innehåller den i ditt projekt? Varför lagras token i en httpOnly-cookie snarare än i `localStorage`?
 
-1. [Databasmodellering - Översätt till relationsmodellen](/website/laromaterial/forelasning/er-modellering-logisk-modellering/) ger en översikt till hur du kan översätta en ER-modell från den konceptuella fasen till en databasmodell som matchar relationsmodellen i den logisk modelleringsfasen.
+4. Beskriv hur ditt `authMiddleware` fungerar steg för steg. Vad händer om cookien saknas, och vad händer om token är giltig?
 
+5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
+## Inlämning
 
-### Kurslitteratur
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom05.md`.
+3. Committa, tagga och pusha:
 
-Läs följande:
-
-1. Databasteknik
-    * Kap 13. Integritetsvillkor
-    * Kap 15: Lagrade procedurer
-    * Kap 20: Tid i databaser
-
-1. [Boken har även en webbplats](http://www.databasteknik.se/webbkursen/) och vissa utdrag från boken finns där. Relevant för detta kmom är följande:
-    * [Integritetsvillkor](http://www.databasteknik.se/webbkursen/integritet/index.html)
-
-
-__ER-modellering__
-
-1. Databasteknik
-    * Kap 6: Översättning från ER-modellen till relationsmodellen
-
-1. [Boken har även en webbplats](http://www.databasteknik.se/webbkursen/) och vissa utdrag från boken finns där. Relevant för detta kmom är följande:
-    * [Översättning från ER-modellen till relationsmodellen](http://www.databasteknik.se/webbkursen/er2relationer/index.html)
-
-
-
-### Artiklar
-
-Kika igenom följande artiklar.
-
-1. I manualen för MariaDB kan du läsa om lagrade procedurer (stored procedures), det är främst följande kapitel som är relevanta, bekanta dig med dem, du kommer att träna på begreppen i kommande övningar.
-    * [Stored Procedures](https://mariadb.com/kb/en/stored-procedures/)
-    * [Stored Procedure Overview](https://mariadb.com/kb/en/stored-procedure-overview/)
-    * [TIMESTAMP](https://mariadb.com/kb/en/timestamp/)
-
-1. Fortsätt jobba igenom artikeln "[Kokbok för databasmodellering](https://dbwebb.se/kunskap/kokbok-for-databasmodellering)", den ger dig processen du skall följa. I detta kmom handlar det främst om att fokusera på logisk modellering.
-
-
-
-{/*
-### Ai som lärare (instuderingsfrågor)
-
-Här finns ett antal instuderingsfrågor som hjälper dig att finna information på egen hand för att träna på de koncept som är relevanta för detta kmom.
-
-<details>
-<summary>Instuderingsfrågor</summary>
-
-1. 
-
-Här är en [utskrift av när en frågesession genomförts](https://chatgpt.com/share/68bafa23-4b84-8005-a745-451d43258c9a). Dina svar kan skifta från de som visas. Var alltid kritisk till dina källor.
-
-</details>
-
-*/}
-
-
-
-## Övningar & Uppgifter
-
-Övningar är träning inför uppgifterna. Uppgifter skall utföras och redovisas.
-
-
-
-### Övningar
-
-Jobba igenom övningarna, de förbereder dig inför uppgifterna.
-
-1. Jobba igenom "[Lagrade procedurer i databas](/website/laromaterial/ovning/lagrade-procedurer/)" för att lära dig om lagrade procedurer och vad du kan göra med dem.
-
-1. Jobba igenom övningen "[Övning: CSharp med lagrade procedurer](/website/laromaterial/ovning/csharp-stored-procedure/)" för att lära dig hur du använder lagrade procedurer mot databasen från ett CSharp program.
-
-
-
-### Uppgifter
-
-Följande uppgifter skall utföras och resultatet skall redovisas.
-
-1. Jobba igenom uppgiften "[Uppgift: CSharp bank (kmom05)](/website/laromaterial/uppgift/kmom05-csharp/)" där du får jobba med lagrade procedurer.
-
-1. Jobba igenom uppgiften "[Uppgift: ER-modellering - logisk (kmom05)](/website/laromaterial/uppgift/kmom05-er-logisk/)".
-
-
-
-## Resultat & Redovisning
-
-Läs [instruktionen om hur du skall redovisa](/website/laromaterial/instruktion/resultat-och-redovisning).
-
-Se till att följande frågor besvaras i din redovisningstext i din rapportsida.
-
-* Hur gick det att komma igång med lagrade procedurer?
-* Hur är din syn på att "programmera" på detta viset i databasen, jämför med traditionell SQL som exponeras i klienten?
-* Skriv ett kort stycke (2-5 meningar) om lagrade procedurer där du förklarar begreppen (fördel, nackdel, användningsområde) för en som inte är insatt.
-
-* Hur går det med logisk modellering, kan du se att databasen växer fram? Vad är svårt att förstå och greppa med själva modelleringen, berätta om utmaningarna med modelleringen.
-
-* Vilken är din TIL för detta kmom?
-
+```bash
+git add report/kmom05.md
+git commit -m "Add kmom05 report"
+git tag kmom05
+git push origin main --tags
+```
 
 
 ## Kommentarer & Noteringar
@@ -162,24 +98,12 @@ Följande är en plan för hur lärarteamet _kan_ lägga upp genomgångarna unde
 
 Första timmen:
 
-* Övning med lagrade procedurer, dels i SQL och dels i CSharp.
+* 
 
 Andra timmen:
 
-* Uppgift där man bygger terminalprogram som använder lagrade procedurer. Modellera själva databasen, skapa den med SQL och visa hur man använder den via lagrade procedurer.
+* 
 
-
-
-### Onsdag
-
-Första timmen:
-
-* ER-modellering, fokus logisk med ett exempel 
-
-
-Andra timmen:
-
-* Stöd för uppgiften med ER-modellering (logisk)
 
 
 ### Torsdag
@@ -187,3 +111,4 @@ Andra timmen:
 * 
 
 </details>
+
