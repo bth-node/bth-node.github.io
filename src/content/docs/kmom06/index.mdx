@@ -24,14 +24,13 @@ Den sista veckan bygger vidare på autentiseringen och lägger till meddelandesy
 
 | Issue | Namn | Vad du gör |
 |---|---|---|
-| 100 | `pwa-install` | Gör appen installerbar som PWA |
-| 101 | `ngrok` | Exponera din lokala server publikt via ngrok |
-| 102 | `ci` (avancerad) | Konfigurera branch protection rules på GitHub |
-| 103 | `testing` (avancerad) | Integrationstester mot en riktig MongoDB-instans |
+| 07d | `tui-messages` | Lägg till messages och post i terminalklienten (kräver 04e och 07a) |
+| 09b | `tui-stream`   | Lyssna på SSE-strömmen från terminalklienten (kräver 04e och 07a) |
+| 08b | `tui-chat`     | Anslut till Socket.io-chatten från terminalklienten (kräver 04e) |
 
 ## Föreläsningar
 
-Realtid är ett nytt tankesätt jämfört med vanliga HTTP-anrop — titta på föreläsningarna om Socket.io och SSE innan du ger dig på de issues:en. De förklarar varför vanlig HTTP inte räcker och hur de två teknikerna skiljer sig åt, vilket gör det lättare att välja rätt verktyg och förstå koden du skriver.
+Titta igenom föreläsningarna innan du börjar med respektive issue. Den första täcker CRUD och ägarskydd — viktig bakgrund för 07b och 07c. De två sista handlar om realtid och förklarar varför vanlig HTTP inte räcker och hur Socket.io och SSE skiljer sig åt, vilket gör det lättare att välja rätt verktyg och förstå koden du skriver.
 
 | Titel | Om |
 |---|---|
@@ -45,6 +44,7 @@ Realtid är ett nytt tankesätt jämfört med vanliga HTTP-anrop — titta på f
 
 | Läs innan | Titel | Varför |
 |---|---|---|
+| Issue 07b | [Mongoose — Populate](https://mongoosejs.com/docs/populate.html) | Förklarar hur `ref` kopplar ihop collections och hur du läser relaterad data |
 | Issue 08 | [Socket.io — What Socket.io is](https://socket.io/docs/v4/index.html) | Förklarar hur Socket.io skiljer sig från raw WebSockets och varför det finns |
 | Issue 08 | [MDN — WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) | Valfri bakgrundsläsning — hjälper att förstå vad Socket.io abstraherar bort |
 | Issue 09 | [MDN — Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) | Täcker SSE-formatet, EventSource och automatisk reconnect på ca 10 minuter |
@@ -62,11 +62,11 @@ Realtid är ett nytt tankesätt jämfört med vanliga HTTP-anrop — titta på f
 
 När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-Quizen för kmom06 testar om du kan skilja på statuskod 401 och 403, vad Socket.io är och vilken transportmekanism det föredrar, hur en SSE-ström fungerar och skiljer sig från WebSockets, samt varför chatthistoriken i det här projektet inte är persistent.
+Quizen för kmom06 testar om du kan skilja på statuskod 401 och 403, vad Socket.io är och vilken transportmekanism det föredrar, hur en SSE-ström fungerar och skiljer sig från WebSockets, varför chatthistoriken i det här projektet inte är persistent, vilken statuskod en lyckad DELETE ska returnera — och ett begrepp från kursens programmeringsfilosofi.
 
 ## Redovisningstext
 
-Skriv dina svar i `report/kmom06.md` i ditt repo.
+Skriv din redovisningstext i `report/kmom06.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
 1. Du implementerade `PATCH` och `DELETE` för meddelanden med ägarskyddskontroll. Varför räcker det inte att bara kolla att användaren är inloggad — vad mer måste kontrolleras?
 
@@ -76,7 +76,9 @@ Skriv dina svar i `report/kmom06.md` i ditt repo.
 
 4. Reflektera över projektet som helhet: vilken del var svårast att förstå och varför? Vad skulle du göra annorlunda om du byggde det igen?
 
-5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
+5. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
+
+6. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
 ## Inlämning
 
@@ -84,7 +86,10 @@ Skriv dina svar i `report/kmom06.md` i ditt repo.
 2. Skriv klart din redovisningstext i `report/kmom06.md`.
 3. Committa och pusha till `main`.
 4. Öppna en pull request från `main` till `bth/submit/kmom06` i ditt repo.
-5. Inkludera din redovisningstext i PR-beskrivningen.
+
+Läraren läser din redovisningstext via `report/kmom06.md` i PR:en.
+
+
 
 ## Kommentarer & Noteringar
 
