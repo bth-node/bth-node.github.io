@@ -20,6 +20,13 @@ Den här veckan kopplar du applikationen till en riktig databas och bygger ett k
 | 06b | `login` | Verifiera inloggning, `POST /auth/login` och `POST /auth/logout`, seed-skript |
 | 07 | `middleware` | Bygg `authMiddleware`, skydda routes, implementera `GET /api/me` |
 
+Valfria issues — gör dem om du vill utforska vidare:
+
+| Issue | Namn | Vad du gör |
+|---|---|---|
+| 06c | `validation` | Lägg till input-validering på auth-routes, returnera tydliga 400-svar |
+| 07a | `tui-auth`   | Lägg till login och logout i terminalklienten, se httpOnly-cookien rå (kräver 04e) |
+
 ## Föreläsningar
 
 Den här veckan introduceras flera koncept som är nya och tätt sammankopplade — databaser, lösenordssäkerhet, tokens och cookies hänger ihop. Titta igenom föreläsningarna i ordning innan du startar varje issue. De tar 15–20 minuter styck och hjälper dig att se sambanden innan du möter dem i koden.
@@ -55,11 +62,11 @@ Den här veckan introduceras flera koncept som är nya och tätt sammankopplade 
 
 När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-Quizen för kmom05 testar om du förstår vad MongoDB är för typ av databas, hur ett Mongoose-schema fungerar, varför lösenord hashas innan de sparas, vad en JWT innehåller, varför `httpOnly`-flaggan är viktig och vad `bcrypt.compare()` faktiskt gör.
+Quizen för kmom05 testar om du förstår vad MongoDB är för typ av databas, hur ett Mongoose-schema fungerar, varför lösenord hashas innan de sparas, vad en JWT innehåller, varför `httpOnly`-flaggan är viktig och vad `bcrypt.compare()` faktiskt gör — och ett begrepp från kursens programmeringsfilosofi.
 
 ## Redovisningstext
 
-Skriv dina svar i `report/kmom05.md` i ditt repo.
+Skriv din redovisningstext i `report/kmom05.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
 1. Beskriv hur du kopplade applikationen till MongoDB. Vad är en Mongoose-modell och vad används den till i ditt projekt?
 
@@ -69,7 +76,9 @@ Skriv dina svar i `report/kmom05.md` i ditt repo.
 
 4. Beskriv hur ditt `authMiddleware` fungerar steg för steg. Vad händer om cookien saknas, och vad händer om token är giltig?
 
-5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
+5. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
+
+6. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
 ## Inlämning
 
@@ -83,6 +92,7 @@ git commit -m "Add kmom05 report"
 git tag kmom05
 git push origin main --tags
 ```
+
 
 
 ## Kommentarer & Noteringar
