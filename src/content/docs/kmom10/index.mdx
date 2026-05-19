@@ -1,342 +1,222 @@
 ---
-title: "Kmom10: Projekt och examination ⚠️" 
-description: Detta kursmoment examinerar och avslutar kursen.
+title: 'kmom10: Projekt och examination'
+description: Examinerande kursmomen över två veckor — grundkrav för godkänt och tre optionella krav för högre betyg.
+revision:
+  2026-05-13: (A, mos) Första versionen.
+  2026-05-18: (B, mos) Ny struktur med grundkrav och tre betygsnivåer.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-# Plan:
+Det här kursmomentet löper över två veckor och är kursens examinerande del. Du visar att du behärskar det du har byggt, skriver en sammanhållen redovisning av hela kursens gång och väljer hur djupt du vill gå beroende på vilket betyg du siktar på.
 
-Uppgift 1:
+---
 
-* koppla på `@join {dbwebb,local}` för att byta till "global" vs "lokal" chatt.
+## Grundkrav — betyg D och E
 
-Uppgift 2:
+För ett godkänt betyg ska hela din applikation fungera och alla obligatoriska issues vara avslutade.
 
-* fler routes för något coolt
+### Applikationen ska fungera
 
+Gå igenom listan och verifiera att varje del fungerar:
 
-Detta kursmoment avslutar och examinerar kursen.
+| Funktionalitet                                        | Issue |
+| ----------------------------------------------------- | ----- |
+| Frontenden laddas via Express                         | 03    |
+| `GET /health` returnerar `{ status: 'ok' }`           | 03    |
+| `GET /api/doc` returnerar API-dokumentation           | 04b   |
+| `GET /api/users` returnerar användare från databasen  | 05    |
+| Registrering skapar en ny användare                   | 06    |
+| Inloggning sätter en httpOnly-cookie                  | 06b   |
+| `GET /api/me` kräver inloggning                       | 07    |
+| Meddelanden kan skapas och hämtas                     | 07b   |
+| Meddelanden kan redigeras och raderas av ägaren       | 07c   |
+| Realtidschatten fungerar mellan flera webbläsarflikar | 08    |
+| Live-flödet uppdateras utan omladdning                | 09    |
 
-Du jobbar enskilt och tar inte hjälp av någon. Det du lämnar in är ditt eget arbete och du har inte låtit en Ai-bot göra ditt jobb.
+### Utöka applikationen
 
-Upplägget är enligt följande:
+Lägg till två konkreta utökningar i din applikation. Beskriv implementationen och dina designbeslut i redovisningstexten.
 
-* Projektet och redovisning (20-40h)
+**Sökning på användare**
 
-Totalt omfattar kursmomentet (09/10) ca 20+20 studietimmar. Du kan själv styra din arbetsinsats genom att välja vilka optionella delar du utför.
+Utöka `GET /api/users` med en valfri query-parameter `name` som filtrerar resultatet:
 
-{/* TODO
-* Faktura kravet kan innehålla ett dolt krav om att alla orderrader skal kopieras till en ny tabell med INSERT FROM SELECT, men kanske skall man i så fall undervisa om det tidigare i kursen.
+```
+GET /api/users?name=alice   → returnerar användare vars namn innehåller "alice" (case-insensitive)
+GET /api/users              → returnerar alla användare (oförändrat beteende)
+```
+
+Verifiera att sökningen fungerar i Bruno och att `GET /api/users` utan parameter fortfarande returnerar alla användare.
+
+**Profiluppdatering**
+
+Lägg till `PATCH /api/me` — en skyddad route som låter den inloggade användaren uppdatera sitt namn och/eller sin avatar:
+
+```
+PATCH /api/me  { "name": "Alice B" }            → uppdaterar namn, behåller avatar
+PATCH /api/me  { "avatar": "bob" }              → uppdaterar avatar, behåller namn
+PATCH /api/me  { "name": "Alice B", "avatar": "bob" }  → uppdaterar båda
+```
+
+Routen kräver inloggning via `authMiddleware`. Eftersom det är PATCH ska bara de fält som skickas med uppdateras — saknas ett fält ska det befintliga värdet behållas. Returnera det uppdaterade användardokumentet.
+
+Lägg till två Bruno-filer i `bruno/dashboard/` för att verifiera den partiella uppdateringen:
+
+| Fil | Body | Vad den verifierar |
+|---|---|---|
+| `patch-me-name.bru` | `{ "name": "..." }` | `res.status` är 200, `res.body.name` är det nya värdet |
+| `patch-me-avatar.bru` | `{ "avatar": "..." }` | `res.status` är 200, `res.body.avatar` är det nya värdet |
+
+Använd `assert`-blocket i Bruno för att verifiera svaret — se befintliga filer i `bruno/` som referens.
+
+---
+
+## Optionella krav — betyg C, B och A
+
+Varje krav höjer betyget ett steg. Krav 1 och krav 2 är fristående — du behöver inte göra ett för att göra det andra. Krav 3 kräver att båda är avklarade. Beskriv vad du gjort och varför i redovisningstexten.
+
+---
+
+### Krav 1 — betyg C: Terminalklienten
+
+Bygg en fungerande terminalklient mot ditt API med `@dbwebb/tui`.
+
+**Grundkrav för klienten:**
+
+Klara issue 04e (TUI-klient) plus minst **två** av följande:
+
+| Issue | Kommando                            | Vad det testar                                  |
+| ----- | ----------------------------------- | ----------------------------------------------- |
+| 07a   | `backend login` / `backend logout`  | POST med auth, httpOnly-cookie som raw header   |
+| 07d   | `backend messages` / `backend post` | Authenticated GET och POST                      |
+| 09b   | `backend stream`                    | SSE-konsumtion med `for await`, AbortController |
+| 08b   | `backend chat`                      | socket.io-client, Promise, SIGINT, readline     |
+
+Alla valda kommandon ska fungera mot din körande server. Visa och beskriv dem i redovisningstexten.
+
+---
+
+### Krav 2 — betyg B: Tester och kodtäckning
+
+Utöka testsviten från issue 04d till att täcka fler delar av applikationen.
+
+**Krav:**
+
+- Nå minst **70 % radtäckning** på route-filerna (`src/routes/`) med `npm run test:coverage`
+- Skriv tester för minst **två** av följande:
+  - `POST /auth/register` — lyckat registrering, duplikat e-post (409), saknade fält (400)
+  - `POST /auth/login` — lyckad inloggning, fel lösenord (401)
+  - `GET /api/messages` — kräver inloggning (401), returnerar rätt data
+  - `POST /api/messages` — skapar meddelande, avvisar tomt text (400)
+
+Testerna ska köra med `npm test` utan beroende av en riktig MongoDB-instans — använd `mongodb-memory-server` (se issue 103) eller mocka anslutningen.
+
+Beskriv vad du testade och varför du valde just de fallen i redovisningstexten.
+
+---
+
+### Krav 3 — betyg A: Eget val
+
+För att lösa detta krav måste du även ha löst krav 1 och krav 2.
+
+Välj och implementera en backend-feature som inte ingår i de obligatoriska issues. Du bestämmer vad — men du måste motivera valet och dokumentera implementationen.
+
+**Krav:**
+
+- Funktionen ska vara implementerad och fungera
+- Beskriv vad du valde och varför i redovisningstexten
+- Reflektera över de designbeslut du gjorde
+
+**Inspiration** — dessa är exempel, inte en begränsad lista:
+
+| Idé             | Vad det innebär                                                        |
+| --------------- | ---------------------------------------------------------------------- |
+| Persistent chat | Spara Socket.io-meddelanden i MongoDB, hämta historik vid `join`       |
+| Rate limiting   | Begränsa antal requests per IP på auth-routes med `express-rate-limit` |
+| PWA             | Gör appen installerbar (issue 100)                                     |
+| Avancerad CI    | Branch protection rules (issue 102)                                    |
+| Eget förslag    | Vad du hittat på vägen som känns värdefullt att bygga                  |
+
+---
+
+## Redovisning & Presentation
+
+Se till att följande frågor besvaras i din redovisningstext i `report/kmom10.md`.
+
+1. För varje krav du implementerat (grundkrav och krav 1–3), skriver du ett textstycke om ca 5-10 meningar där du beskriver vad du gjort och hur du tänkt. Poängsättningen tar sin start i din text så se till att skriva väl för att undvika poängavdrag. Använd rubriker så din text blir lätt att läsa.
+
+   **Missar du att skriva/dokumentera din lösning så blir det 0 poäng. Du kan inte komplettera en inlämning för att få högre betyg.**
+
+2. Skriv ett allmänt stycke om hur projektet gick att genomföra. Problem/lösningar/strul/enkelt/svårt/snabbt/lång tid, etc. Var projektet lätt eller svårt? Tog det lång tid? Vad var svårt och vad gick lätt? Var det ett bra och rimligt projekt för denna kursen?
+
+3. Vilken är din TIL för detta kmom?
+
+4. Vilken är din TIL för kursen som helhet?
+
+5. (Valfritt) Avsluta med ett sista stycke med dina tankar om kursen och vad du anser om materialet och handledningen (ca 5-10 meningar). Återkoppla till lärarteamet och förslå eventuella förbättringsförslag till kommande kurstillfällen.
+
+6. (Valfritt) Är du nöjd/missnöjd? Kommer du att rekommendera kursen till dina vänner/kollegor? På en skala 1-10, vilket betyg ger du kursen?
+
+### Slutpresentation och redovisningsvideo
+
+Du skall förbereda och utföra en slutpresentation av ditt projekt. Du kan läsa hur du kan förbereda dig i dokumentet "[Planera din slutpresentation](https://bth-node.github.io/studieguide/planera-din-slutpresentation/)".
+
+Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera din PR och lägg in länken). Detta kan du göra dagen efter projektets deadline. Läs mer om hur du kan [spela in en redovisningsvideo med OBS](https://bth-node.github.io/studieguide/redovisningsvideo-spela-in/).
+
+---
+
+## Inlämning
+
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom10.md`.
+3. Committa, tagga och pusha:
+
+  ```bash
+  git add .
+  git commit -m "kmom10 done"
+  git tag kmom10
+  git push origin main --tags
+  ```
+
+4. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
+
+Läraren läser din redovisningstext via `report/kmom10.md` i PR:en och bedömer vilka krav som är uppfyllda.
+
+{/*
+
+## Tidigare version av kmom10 (sparad för referens)
+
+Den ursprungliga versionen hade en enklare struktur utan betygsnivåer:
+
+- Kontrollera att du är klar (samma checklista som grundkravet ovan)
+- Valfria issues 100-103 listades här — de är nu exempel under Krav 3
+- Redovisningstext med fyra frågor — bevarade ovan med tillägg
+
+## Tankar om framtida revision
+
+Från session-diskussion (2026-05-18):
+
+Alternativ riktning för kmom10: examinerande projekt där studenten bygger en ny backend
+för en given domän (t.ex. anslagstavla, forum) istället för att bygga vidare på kursapplikationen.
+
+Grundkrav i det scenariot:
+
+- REST API med CRUD
+- MongoDB med minst två modeller
+- JWT-autentisering
+- /api/doc
+
+Optionella nivåer i det scenariot:
+
+- Nivå 1 (C): Koppla upp mot en gemensam chattserver via Socket.io — studentens server
+  deltar som klient. Testar Socket.io från klientperspektiv.
+- Nivå 2 (B): AI-integration — lägg till en AI-bot via Anthropic/OpenAI, svaret
+  broadcastas via Socket.io eller SSE.
+- Nivå 3 (A): Eget val med motivering.
+
+Påskägg i frontenden: frontenden får dolda funktioner (typing indicator, rooms, socket auth)
+som serverimplementationer kan låsa upp. Kräver planerade ändringar i public/app.js.
+Tas upp vid nästa kursrevision.
 */}
-
-
-## Förutsättning
-
-Du har jobbat igenom kmom01-kmom08 (och redovisat dem). Det finns ingen anledning att påbörja projektet innan du är klar med kmom08.
-
-
-
-## Bedömning och betygsättning
-
-Det finns ett dokument som beskriver [grunderna för bedömning och betygsättning av projektet och kursen som helhet](/website/intro/bedomning-och-betygsattning/).
-
-
-
-## Projektidé och upplägg
-
-Du skall fortsätta att bygga ut din eshop med innehåll i databasen och ett tillhörande terminalprogram i CSharp.
-
-Du behöver göra de krav som är grundläggande, de är obligatoriska att genomföra (krav 1-3) och leder ofta fram till betyg D (eller E om man får något avdrag).
-
-Det finns optionella delar som du kan välja att göra för att öka dina chanser till ett högre betyg, (krav 4-6). Normalt kan varje optionellt krav påverka en betygsnivå, det vill säga krav 4 -> C, krav 5 -> B, och krav 6 -> A.
-
-Kraven är byggda för att utföras i den ordning som de är listade.
-
-
-
-### Krav 1: CSharp
-
-Utför följande krav.
-
-1. Skapa ett CSharp projekt i katalogen `kmom/10/Eshop` genom att kopiera `kmom/08/Eshop`. 
-
-1. Dela upp koden i klasser. Organisera din kod så att den är DRY. Refaktorisera när det behövs.
-
-1. Skriv all din kod i din branch `main`. 
-
-1. Koden skall passera `roslynator analyze` enligt Roslyn.
-
-1. Samtliga krav från kmom07 och kmom08 skall vara uppfyllda.
-
-
-
-### Krav 2: Databasens schema och innehåll
-
-Utför följande krav.
-
-1. Du har sedan tidigare följande filer i katalogen `sql/` för att skapa databasen med dess schema och innehåll. Uppdatera dessa filer för att uppfylla kraven i uppgiften.
-
-    1. `setup.sql`
-    1. `proc.sql`
-    1. `insert.sql`
-
-1. Uppdatera din databasmodell i filen `sql/eshop.puml` med egen kraft eller med hjälp av din AI-kompis. Gör detta när du är helt klar med projektet så att alla delar du gjort finns med.
-
-1. När du är helt klar, skapa en backup av din databas och spara i `sql/backup.sql`. Läs mer om hur du [skapar (och verifierar) en backupfil](https://github.com/bth-databas/forum/discussions/9). 
-
-    ```bash title="Skapa en backup av din databas."
-    mariadb-dump                          \
-        --routines                        \
-        --triggers                        \
-        --default-character-set=utf8mb4   \
-        eshop > backup.sql
-    ```
-
-{/* Skriv att man måste vara användaren dbadm när man gör backupen. Även i kmom08 och i foruminlägget. */}
-
-
-
-#### Självtest databas
-
-Försäkra dig om att din backupfil fungerar. När läraren återskapar din databas så kommer följande kommando att köras.
-
-```bash
-# Gå till katalogen sql/
-mariadb eshop < backup.sql
-```
-
-Kontrollera att du även kan återskapa din databas enligt följande.
-
-```bash title="Återskapa databas"
-# Gå till katalogen sql/
-mariadb < setup.sql
-mariadb eshop < proc.sql
-mariadb eshop < insert.sql
-```
-
-Flödet ovan behöver fungera, om din backupfil inte fungerar så kan läraren välja att prova att återställa din databas från dessa filer. Det är tillåtet att dela upp din kod i fler filer och göra source på dem samt att läsa in data från till exempel csv-filer.
-
-Filerna `proc.sql` och `insert.sql` får inte innehålla ett `USE eshop` för att välja databas. Det gör att läraren får problem vid rättning.
-
-Kontrollera att databasen innehåller tillräckligt med data.
-
-
-
-### Krav 3: CRUD product
-
-Implementera följande menyval.
-
-```bash
-product_add <title> <base_price>  - Add a new product with its base price
-product_edit <product_id>         - Edit details of a product
-product_del <product_id>          - Delete a product using soft delete.
-product_deleted <search>          - Show soft deleted products (or filter by <search>).
-product_restore <product_id>      - Un-delete a product that was soft deleted.
-```
-
-<details>
-<summary>Men jag har inte AUTO_INCREMENT som id på produkten?</summary>
-
-Ok, du kanske valde att lägga till ett eget id på produkten? I så fall kan du anpassa kommandot så här:
-
-```bash
-product_add <title> <base_price> <id> - Add a new product with its base price and id.
-```
-
-</details>
-
-Det räcker att man kan redigera produktens namn och pris vid `product_edit`. Tanken med "edit" är att man får upp en ny meny (eller liknande) där man kan redigera detaljer om produkten. En variant är att man kan klicka igenom alla värden som kan ändras och antingen skriver man in ett nytt värde för att ändra, eller så trycker man enter och då ändras inte värdet. Men exakt hur man löser det kan variera.
-
-Använd "soft delete" när en produkt raderas med `product_del`.
-
-När en produkt är "soft" raderad så skall den inte synas via kommandot `product <search>` (från kmom07).
-
-Man skall kunna återställa en raderad produkt med hjälp av `product_restore`.
-
-
-
-#### Självtest CRUD product
-
-Genomför följande självtest för att verifiera att grundfunktionaliteten finns på plats.
-
-1. Skapa en ny produkt.
-1. Visa att den nyskapade produkten syns bland produkterna. 
-1. Radera den nyskapade produkten.
-1. Visa att den raderade produkten inte syns bland produkterna. 
-1. Visa att den raderade produkten syns bland de raderade produkterna.
-1. Återställ produkten.
-1. Redigera produktens namn, pris.
-1. Visa att den återställda produkten inte syns bland de raderade produkterna.
-1. Visa att den återställda produkten syns bland produkterna. 
-
-
-
-### Krav 4 (optionellt): Produktkategori
-
-Inför produktkategorier. Varje kategori har ett kortnamn och en titel. En produkt kan tillhöra noll, en eller flera kategorier.
-
-När man skapar en ny produkt så tillhör den ännu ingen kategori. 
-
-Implementera (eller uppdatera) följande menyval.
-
-```bash
-products <search>                   - Show all products or filter by <search>
-categories <search>                 - Show all categories or filter by <search>
-prod2cat <product_id> <category_id> - Connect a product with a category.
-```
-
-I resultatet för `products <search>` visas samtliga produkter, även de som ännu inte tillhör en kategori. Visa detaljer om produkten, inklusive de kategorier som den tillhör. Om produkten tillhör flera kategorier så skall produkten fortfarande visas på en rad, inklusive detaljer om de kategorier den tillhör.
-
-I din databas skall finnas minst följande data:
-
-1. Minst tre olika kategorier.
-1. En produkt som inte tillhör någon kategori.
-1. En produkt som tillhör en kategori.
-1. En produkt som tillhör två kategorier.
-
-
-
-#### Självtest Produktkategori
-
-Genomför följande självtest för att verifiera att grundfunktionaliteten finns på plats.
-
-1. Skapa en ny produkt.
-1. Kontrollera att den syns i listan av alla produkter.
-1. Koppla produkten till en kategori.
-1. Kontrollera att den syns i listan av alla produkter med sin kategori.
-1. Koppla produkten till ytterligare en kategori.
-1. Kontrollera att den syns i listan av alla produkter med sina båda kategorier (på en rad).
-
-
-
-### Krav 5 (optionellt): Picklist & Ship
-
-[kmom07] Det finns stöd för att skapa en order med orderrader och "beställa" sin order, varje orderrad har en produkt, antal och ett styckepris. I produktens tabell finns ett inköpspris som kan skilja sig från försäljningspriset.
-
-[kmom08] Det finns stöd för att lägga in och ta bort produkter på lagrets hyllor. På varje lagerhylla ligger ett antal av produkten. En lagerhylla kan innehålla flera olika produkter.
-
-Implementera följande menyval.
-
-```bash
-picklist <order_id>     - Present a picklist for the order.
-ship <order_id>         - Ship the order.
-```
-
-I terminalklienten kan man skapa en plocklista för en order med `picklist <order_id>`. Det är en rapport som visar hur många av respektive beställd produkt finns i lagret (eller inte). Rapporten visar på vilken lagerhylla som produkten finns. Plocklistan är till den som skall paketera beställningen i en låda för att levereras till beställaren.
-
-Man kan markera en order som "skickad" via `ship <order_id>`. Det betyder att ordern ändrar status till att vara "paketerad och ivägskickad till kund".
-
-När man skickar en order så skall antalet produkter på lagret räknas ned. Förslagsvis så använder du rapporten i picklist för att veta vilka lagerhyllor som skall räknas ned. 
-
-Håll det enkelt när du testar. Undvik att placera en produkt på flera lagerhyllor. Se till att det finns tillräckligt med produkter på lagret. Undvik specialfall. Undvik felfall. Håll det enkelt. Krångla inte till det.
-
-I databasen skall det finnas minst följande data rörande ordrar.
-
-1. Lägg in minst 5 ordrar där följande skall vara uppfyllt:
-    1. En order har ingen orderrad.
-    1. Fyra av ordrarna har en eller flera orderrader.
-    1. En av ordrarna är markerad som ännu ej beställd.
-    1. En av ordrarna är markerad som beställd.
-    1. Två av ordrarna är markerade som skeppad/skickad.
-
-
-
-#### Självtest Picklist & Ship
-
-Genomför följande självtest för att verifiera att grundfunktionaliteten finns på plats.
-
-1. Välj en lagerhylla och placera 99 st av din nyskapade produkt på den hyllan.
-1. Skapa en order, lägg till en order rad med 9 st av din nyligen skapade produkt med försäljningspris som skiljer sig från inköpspriset.
-1. Kontrollera att lagret stämmer.
-1. Kontrollera att orderns innehåll är korrekt.
-1. Skapa en picklist för ordern.
-1. Gör ship på ordern.
-1. Kontrollera att orderns status uppdaterats.
-1. Kontrollera att antalet produkter på lagerhyllan minskades.
-
-
-
-### Krav 6 (optionellt): Invoice & Pay
-
-Detta kravet förutsätter att du löst krav 5.
-
-När en leverans skickas så genereras automatiskt ett underlag för en faktura med ett fakturanummer. Fakturan innehåller samma orderrader som ordern.
-
-När man skriver ut en faktura kan man se detaljer om själva fakturan som visar både datum för när ordern skapades och när fakturan skapades samt vilken kund det gäller. Det skall finnas ett senaste betaldatum för fakturan som är 30 dagar från när fakturan skapades.
-
-För varje orderrad, eller fakturarad, så ser man produktens id och namn samt antal, försäljningspris och totalen. Man ser också inköpspriset per styck (produktens baspris) och en summa som berättar hur mycket företaget tjänade på just denna fakturaraden.
-
-I sista delen ser man totala beloppet som fakturan är på, det som kunden skall betala. Man ser också totalt hur mycket företaget tjänade på just denna fakturan.
-
-Detta med företages vinst på försäljningen är ju inte den informationen som kunden får på sin faktura, denna faktura innehåller lite mer så att företagets controller kan undersöka hur mycket pengar man tjänar på varje faktura. Det är en faktura med "extra allt".
-
-När fakturan skrivs ut så skall det tydligt framgå, i sista utskriften att fakturan är betald eller ej, man skall också se när fakturan betalades.
-
-Implementera följande menyval.
-
-```bash
-invoices <search>      - Show a list of all invoices (or filter by search).
-invoice <invoice_id>   - Show all details of the invoice.
-paid <invoice_id>      - Mark the invoice as payed.
-```
-
-Det skall finnas minst två fakturor i databasen och av dessa skall en vara betald och den andra skall ännu inte vara betald.
-
-För övrigt, håll det enkelt. Undvik specialfall. Krångla inte.
-
-
-
-#### Självtest Invoice & Pay
-
-Följande är förslag till hur du själv kan testa delar av kravet.
-
-1. Visa vilka fakturor som finns.
-1. Välj en av dem och titta på den så att den innehåller alla detaljer.
-1. Skapa en ny order.
-  1. Beställ din nyskapade produkt.
-  1. Gör en picklist.
-  1. Markera ordern som beställd och skickad.
-1. (Fakturan skapas)
-1. Kontrollera att det finns en ny faktura som är kopplad till din order.
-1. Visa alla detaljer om fakturan.
-1. Betala fakturan.
-1. Kontroller att fakturan nu är betald och att det syns i faktura-rapporten.
-
-
-
-### Krav inlämning
-
-1. Skapa backupfilen.
-
-1. Använd backupfilen som underlag när du genomför självtesterna för de kommandon du implementerat.
-
-1. Tagga du ditt repo (v10.0.0 eller högre) och pushar till GitHub.
-
-1. Gör du en pull request (PR) mot branchen `bth/submit/kmom10`. [Läs om hur du gör en PR](/website/laromaterial/instruktion/gor-en-pr-for-kmom03/).
-
-
-
-## Krav redovisning
-
-Se till att följande frågor besvaras i din redovisningstext.
-
-1. För varje krav du implementerat, dvs 1-6, skriver du ett textstycke om ca 5-10 meningar där du beskriver vad du gjort och hur du tänkt. Poängsättningen tar sin start i din text så se till att skriva väl för att undvika poängavdrag. Använd rubriker så din text blir lätt att läsa. Missar du att skriva/dokumentera din lösning så blir det 0 poäng. Du kan inte komplettera en inlämning för att få högre betyg.
-
-1. Skriv ett allmänt stycke om hur projektet gick att genomföra. Problem/lösningar/strul/enkelt/svårt/snabbt/lång tid, etc. Var projektet lätt eller svårt? Tog det lång tid? Vad var svårt och vad gick lätt? Var det ett bra och rimligt projekt för denna kursen?
-
-1. Vilken är din TIL för detta kmom?
-1. Vilken är din TIL för kursen som helhet?
-
-1. (Valfritt) Avsluta med ett sista stycke med dina tankar om kursen och vad du anser om materialet och handledningen (ca 5-10 meningar). Återkoppla till lärarteamet och förslå eventuella förbättringsförslag till kommande kurstillfällen. 
-
-1. (Valfritt) Är du nöjd/missnöjd? Kommer du att rekommendera kursen till dina vänner/kollegor? På en skala 1-10, vilket betyg ger du kursen?
-
-1. Redovisning / redovisningsvideo
-
-    1. Du skall förbereda och utföra en slutpresentation av ditt projekt. Du kan läsa hur du kan förbereda dig i dokumentet "[Planera din slutpresentation](/website/laromaterial/instruktion/planera-din-slutpresentation/)".
-
-    1. **Campus** Du redovisar muntligt i klassrummet under schemalagd tid. Du förbereder en kort presentation (3-5 min) där du visar upp din lösning och berättar om hur du löst kraven. Du kan använda bilder, skärmdumpar eller liknande för att visa upp din lösning. Du kan även visa upp din kod om du vill. Efter din presentation så får du frågor från lärare och/eller dina kurskamrater.
-
-    1. **Distans och kurspaket** Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera din PR och lägg in länken). Detta kan du göra dagen efter projektets deadline. Läs mer om hur du kan [spela in en redovisningsvideo med OBS](/website/laromaterial/instruktion/redovisningsvideo-spela-in/).
