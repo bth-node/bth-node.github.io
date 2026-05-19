@@ -50,6 +50,8 @@ GET /api/users              → returnerar alla användare (oförändrat beteend
 
 Verifiera att sökningen fungerar i Bruno och att `GET /api/users` utan parameter fortfarande returnerar alla användare.
 
+När du lägger till `GET /api/users?name=` i `/api/doc` låser frontenden upp en sökruta i Users-fliken — du kan då testa sökningen direkt i webbläsaren.
+
 **Profiluppdatering**
 
 Lägg till `PATCH /api/me` — en skyddad route som låter den inloggade användaren uppdatera sitt namn och/eller sin avatar:
@@ -61,6 +63,8 @@ PATCH /api/me  { "name": "Alice B", "avatar": "bob" }  → uppdaterar båda
 ```
 
 Routen kräver inloggning via `authMiddleware`. Eftersom det är PATCH ska bara de fält som skickas med uppdateras — saknas ett fält ska det befintliga värdet behållas. Returnera det uppdaterade användardokumentet.
+
+När du lägger till `PATCH /api/me` i `/api/doc` låser frontenden upp en "Edit profile"-knapp i Dashboard-fliken — du kan då testa profiluppdateringen direkt i webbläsaren.
 
 Lägg till två Bruno-filer i `bruno/dashboard/` för att verifiera den partiella uppdateringen:
 
@@ -79,7 +83,7 @@ Varje krav höjer betyget ett steg. Krav 1 och krav 2 är fristående — du beh
 
 ---
 
-### Krav 1 — betyg C: Terminalklienten
+### Krav 1: Terminalklienten
 
 Bygg en fungerande terminalklient mot ditt API med `@dbwebb/tui`.
 
@@ -98,7 +102,7 @@ Alla valda kommandon ska fungera mot din körande server. Visa och beskriv dem i
 
 ---
 
-### Krav 2 — betyg B: Tester och kodtäckning
+### Krav 2: Tester och kodtäckning
 
 Utöka testsviten från issue 04d till att täcka fler delar av applikationen.
 
@@ -117,7 +121,7 @@ Beskriv vad du testade och varför du valde just de fallen i redovisningstexten.
 
 ---
 
-### Krav 3 — betyg A: Eget val
+### Krav 3: Eget val
 
 För att lösa detta krav måste du även ha löst krav 1 och krav 2.
 
