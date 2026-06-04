@@ -106,18 +106,19 @@ Visa skillnaden mellan sekventiell och parallell exekvering med ett minimalt scr
 
 ### Block 2 — Autentisering med tokens (50 min)
 
-Visa auth-flödet med `curl` eller ett litet scratch-skript mot den körande servern. Gör det synligt — visa statuskoderna, visa token-strängen, visa att samma URL ger 401 utan token och 200 med.
+Visa auth-flödet med `curl` eller ett litet scratch-skript mot den körande servern. Poängen är att göra det osynliga synligt — visa statuskoderna, visa token-strängen, visa att samma URL ger 401 utan token och 200 med. Förklara kort vad som skiljer serverns opaque token från JWT.
 
-- Starta `npm run site-1` och visa att `/intern.html` ger `401` med `curl -i` eller ett fetch-skript utan headers
-- Visa ett POST-login-anrop och skriv ut hela JSON-svaret — peka på `token`-fältet
-- Dekoda JWT-strängen manuellt på [jwt.io](https://jwt.io) — visa header, payload och att signaturen inte avslöjar lösenordet
+- Starta `npm run site-1` och visa att `/intern.html` ger `401` utan token — `curl -i http://localhost:3000/intern.html`
+- Visa ett POST-login-anrop och skriv ut hela JSON-svaret — peka på att `token` är en slumpmässig hex-sträng, inte en JWT
+- Visa att servern sparar token i en `Map` i minnet — token i sig bär ingen information, servern slår upp vem det är
 - Visa ett fetch-anrop med `Authorization: Bearer <token>` → `200 OK`
 - Visa `403` genom att använda personal-token mot `/chef.html`
-- Visa `.env`-filen och `process.env.VARIABLE` i REPL med `dotenv` — varför det inte ska checkas in
-- 5 min: hur samma token-mönster återkommer i verkliga API:er (GitHub, Stripe, etc.)
+- Visa `GET /whoami` med token — servern svarar med `{ username, role }` hämtat ur sin `Map`
+- Jämför kort med JWT: "om token vore en JWT skulle servern inte behöva slå upp något — informationen finns i token och verifieras med en signatur" — det är vad ni möter i backend-kursen
+- Visa `.env`-filen och `process.env.VARIABLE` med `dotenv` — varför det inte ska checkas in
 
 kmom03
 - Block 1: `console.time`-demo sekventiell vs `Promise.all` → `JSON.stringify` → `writeFile`
-- Block 2: `curl`/fetch mot servern: `401` → login → token → `200` → `403` med fel roll → jwt.io
+- Block 2: `curl`: `401` → login → hex-token → `200` → `403` med fel roll → `/whoami` → opaque vs JWT
 
 </details>
