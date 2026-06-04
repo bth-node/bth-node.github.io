@@ -1,198 +1,117 @@
 ---
-title: "Kmom01: Scrape 1 ⚠️" 
-description: De första stegen i att skrapa data från webben med Node.js.
+title: 'kmom01: Web scraping — grunden'
+description: Kom igång med web scraping i Node.js — fetch, cheerio och grundläggande HTML-parsning.
 revision:
-  2026-04-21: (A, klw) Första versionen. 
+  2026-06-04: (A, klw) Första versionen.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-# Plan:
+Den här veckan kommer du igång med web scraping i Node.js. Du lär dig att hämta HTML-sidor med `fetch`, ladda och traversera DOM:en med biblioteket cheerio, och plocka ut specifik information. Det är flödet du återanvänder i alla kommande uppgifter, så det lönar sig att förstå varje steg ordentligt.
 
-* Gör uppgift 1 (Hämta en sida och skriv ut grundinformation)
-* Gör uppgift 2 (Loopa igenom navigeringslänkar med for-loop)
-* Gör uppgift 3 (Öppettider: vilka dagar stänger senast?)
-* Gör uppgift 4 (Personal: beräkna anställningstid)
+## Issues
 
+Arbeta igenom issues i ordning. Varje issue är ett steg framåt i applikationen.
 
-Vi skall jobba med databasen MariaDB som är en relationsdatabas. Som klienter använder vi en terminalbaserad klient och en fönsterbaserad grafisk klient. Klienterna har båda sin plats i vår verktygslåda och de är bra att använda vid olika typer av tillfällen.
+Du är välkommen att skriva egna kommentarer i varje issue medan du arbetar — noteringar, frågor eller korta reflektioner om vad du lärde dig. Det hjälper dig att minnas och ger läraren inblick i din process. Stäng ett issue när du anser att det är klart.
 
-I kursen använder vi MariaDB som databas. MariaDB är en "fork" av MySQL och i praktiken är de väldigt lika varandra. MySQL är mer kommersiellt medan MariaDB är mer community-drivet. För kursens syften kan vi betrakta dem som likvärdiga.
+| Issue | Namn           | Vad du gör                                                              |
+| ----- | -------------- | ----------------------------------------------------------------------- |
+| 01    | `fetchPage`    | Hämta startsidan med `fetch`, ladda i cheerio, skriv ut metadata        |
+| 02    | `navLinks`     | Plocka ut alla navigeringslänkar ur `<nav>`, bygg array av objekt       |
+| 03    | `openingHours` | Skrapa öppettidstabellen, filtrera stängda dagar, hitta senaste stängningstid |
 
-I en relationsdatabas pratar vi SQL med databasen. SQL är ett deklarativt frågespråk för relationsdatabaser men det finns också inslag av imperativ programmering likt ett "vanligt" programmeringsspråk.
+## Föreläsningar
 
-I inledningen skriver vi SQL för att skapa tabeller och för att lägga till, uppdatera, visa och radera data från databasen. När databasserver och klienterna är på plats så kikar vi på en del grundkonstruktioner för SQL.
+| Titel | Om |
+|---|---|
+| [Fetch och async/await — hämta data från webben](https://bth-node.github.io/node-klwstud/kmom01-1-fetch/slides.html) | fetch, Promises, async/await, Response-objektet, felhantering |
+| [Cheerio — HTML-parsning och DOM-traversering](https://bth-node.github.io/node-klwstud/kmom01-2-cheerio/slides.html) | Selektorer, .find(), .eq(), .text(), .attr(), for...of, strängjämförelse |
 
-Vi börjar med att använda en befintlig databas som heter "world" som innehåller data om världens länder, städer och kontinenter. Vi skapar SQL-frågor mot databasen för att hämta ut information ur den.
+## Studiematerial
 
+**Läsning** — Läs igenom dessa innan du börjar med respektive issue. Det handlar inte om att memorera — det handlar om att få en bild av varför saker fungerar som de gör, så att koden känns logisk snarare än som magi du kopierar.
 
+| Läs innan | Titel | Varför |
+|---|---|---|
+| Issue 01 | [MDN — Using the Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) | Förklarar fetch, async/await och Response-objektet |
+| Issue 01 | [cheerio — Getting started](https://cheerio.js.org/docs/intro) | Officiell introduktion till cheerio — jQuery-liknande API för Node.js |
 
-## Läs & Studera
+**Referens** — Ha dessa öppna i en flik när du kodar. Du behöver inte läsa dem i förväg — slå upp det du behöver när du behöver det. Det är så erfarna utvecklare arbetar.
 
-Här kan du på egen hand studera och förbereda dig inför övningar och uppgifter.
+| Verktyg | Länk |
+|---|---|
+| cheerio API | [cheerio.js.org/docs/api](https://cheerio.js.org/docs/api/classes/Cheerio) |
+| MDN — fetch | [developer.mozilla.org/en-US/docs/Web/API/fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) |
 
+## Quiz
 
+När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-### Föreläsning
+Quizen för kmom01 testar om du förstår hur `fetch` och `async/await` fungerar, vad cheerio är och hur man väljer element med det, skillnaden mellan `response.ok` och `response.text()`, och hur man itererar över HTML-element med en `for`-loop.
 
-Titta på följande inspelade föreläsningar. Föreläsningarna kan innehålla tips om läsanvisningar.
+## Redovisningstext
 
-{/*
-1. [Kursintro](./../forelasning/kursintro) som ger en introduktion till kursens struktur och upplägg samt en översikt av kursens innehåll.
-*/}
+Skriv din redovisningstext i `report/kmom01.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
-1. [Introduktion till databaser och relationsdatabaser](/website/laromaterial/forelasning/introduktion-till-databaser-och-relations-databaser/) ger dig en introduktion till begrepp som databas och relationsdatabas.
+1. Beskriv hur `fetch` och `async/await` fungerar tillsammans. Vad händer om `response.ok` är `false` och hur hanterade du det?
 
+2. Vad är cheerio och hur liknar det jQuery? Beskriv med ett konkret exempel hur du valde och läste ut text från ett HTML-element.
 
+3. I uppgift 03 jämförde du tider som strängar (`"18:00" > "17:00"`). Varför fungerar det och när kan det vara ett problem?
 
-### Kurslitteratur
+4. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
-Läs följande:
+## Inlämning
 
-1. Kursboken Databasteknik om MySQL.
-    * Kap 1: Databaser och databashanterare
-    * Kap 7: Introduktion till frågespråket SQL
-    * Kap 29: Introduktion till MySQL (om du har tid och lust)
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom01.md`.
+3. Committa, tagga och pusha:
 
-2. [Boken har även en webbplats](http://www.databasteknik.se/webbkursen/) och vissa utdrag från boken finns där. Relevant för detta kmom är följande:
+```bash
+git add report/kmom01.md
+git commit -m "Add kmom01 report"
+git tag kmom01
+git push origin main --tags
+```
 
-    * [Introduktion till databaser och databashanterare](http://www.databasteknik.se/webbkursen/databaser/index.html)
-    * [Introduktion till frågespråket SQL](http://www.databasteknik.se/webbkursen/sql/index.html)
-    * [Introduktion till MySQL](http://www.databasteknik.se/webbkursen/mysql/index.html) (om du har tid och lust)
-
-
-
-### Artiklar
-
-Kika igenom följande artiklar.
-
-1. Kika igenom referensmanualen för MariaDB, kort och översiktligt så att du kan navigera i den. Referensmanualen är ett viktigt verktyg för att bli bra på databaser och SQL. Se till att du kan hitta till den delen som visar hur SQL med SELECT skall skrivas i MySQL.
-
-    * [MariaDB Server Documentation](https://mariadb.com/docs/)
-    * [MySQL documentation](https://dev.mysql.com/doc/) (om du har tid och lust)
-
-1. Under kursen kommer vi att ponera vikten av att hålla sig till en kodstil för SQL-koden. Det kommer inte vara absolut strikt, men det är en rimlig rekommendation att följa en kodstil. För kursen har vi valt "[SQL Style Guide by Simon Holywell](https://www.sqlstyle.guide/)". Ha detta i bakhuvudet när du funderar på hur man skriver sin SQL-kod. Om du har funderingar kring kodstilen så kan du läsa "[SQL style guide misconceptions](https://www.simonholywell.com/post/2016/12/sql-style-guide-misconceptions/)".
-
-
-
-### Video 
-
-Om du gillar att lära från video så kan du kika igenom följande videor för att få grepp om grunderna i Databaser och SQL. Ibland kan man hitta bra resurser på nätet och detta är ett litet försök att visa upp det.
-
-1. För att få en snabb översikt om databaser och SQL så kikar du igenom videon "[What is Database & SQL? (6 min)](https://www.youtube.com/watch?v=FR4QIeZaPeM)". Videon ger dig en snabb översikt av termer med förklaringar.
-
-1. Videon "[Learn Basic SQL in 10 Minutes (9 min)](https://www.youtube.com/watch?v=bEtnYWuo2Bw)" ger dig en snabb förklaring till grunderna i SQL. Videon hanterar även översikt av mer avancerade begrepp som JOIN, UNION och GROUP. Dessa kommer senare i kursen.
-
-
-
-### Ai som lärare (instuderingsfrågor)
-
-Här finns ett antal instuderingsfrågor som hjälper dig att finna information på egen hand via din Ai-kompis, för att på egen hand träna på de koncept som är relevanta för detta kmom.
+## Plan för veckans genomgång
 
 <details>
-<summary>Instuderingsfrågor</summary>
+<summary>Genomgång, ca 2 timmar</summary>
 
-1. Jag skall gå en kurs i databasteknik på högskolan, vill du förklara grunden i en relationsdatabas?
-1. Berätta kort om databasen MariaDB och hur den skiljer sig från MySQL.
-1. Förklara kort hur SQL fungerar och vilka de vanligaste kommandona är.
+Genomgången visar begreppen och hur de fungerar — studenterna gör uppgifterna själva. Använd korta isolerade exempel i terminalen, inte studenternas kod.
 
-Här är en [summering av hur en sådan dialog kan se ut](https://chatgpt.com/share/696133c6-e268-8005-9383-5a185ca1d533), därefter är det bara att fylla på med egna funderingar.
+### Block 1 — fetch och async/await (60 min)
 
-</details>
+Visa hur `fetch` och Promises fungerar med minimala exempel. Poängen är att studenten förstår vad som händer under huven innan de skriver sin egen kod.
 
-Glöm inte att vara kritisk till informationen du får, precis som man vanligen är mot alla olika källor av information. Svaren kan skifta beroende av vilken Ai-kompis du väljer.
+- Vad är ett Promise? Visa i Node REPL: `fetch("https://example.com")` — returnerar ett Promise, inte ett svar
+- Visa `async/await` mot ett enkelt anrop: `const res = await fetch(...)` — vad händer utan `await`?
+- Visa `response.ok` och `response.status` — öppna en sida som ger 404 och visa att koden inte kraschar men `ok` är `false`
+- Visa `response.text()` kontra `response.json()` — samma kropp, olika parsning
+- Visa cheerio på en hårdkodad HTML-sträng direkt i terminalen (ingen server behövs):
+  ```js
+  const $ = cheerio.load('<h1>Hej</h1><p class="tagline">Text</p>')
+  $("h1").text()        // → "Hej"
+  $(".tagline").text()  // → "Text"
+  ```
+- Visa skillnaden med och utan `.trim()` på en sträng med osynliga blanktecken
 
+### Block 2 — Selektorer och iteration (50 min)
 
+Visa hur man navigerar en riktig HTML-sida med cheerio. Starta servern och öppna källkoden i webbläsaren parallellt så studenter ser kopplingen mellan HTML-strukturen och selektorn.
 
-## Övningar & Uppgifter
+- Starta `npm run site-1` — öppna DevTools → Inspect och visa tabell-strukturen
+- Visa selektorer live i ett scratch-skript: `$("nav a")`, `$("table#oppettider tbody tr")`, `$("td").eq(2)`
+- Visa `for...of` vs `.each()` på samma element — välj ett och förklara varför
+- Visa strängjämförelse för klockslag: `"18:00" > "17:00"` i Node REPL — varför fungerar det?
+- Visa vad som händer vid `"9:00" > "10:00"` — varför nollpaddat format är viktigt
+- 5 min: vad kmom02 handlar om — data som behöver rensas och analyseras
 
-Övningar är träning inför uppgifterna. Uppgifter skall utföras och redovisas.
-
-
-
-### Övningar
-
-Jobba igenom övningarna, de förbereder dig inför uppgifterna.
-
-1. Jobba igenom övningen [Övning databasen World: SELECT och rapporter](/website/laromaterial/ovning/world-database-with-select/). Övningen går igenom hur du kan använda en befintlig databas (world) och skapa SQL-frågor mot den med både terminalklienten och desktopklienten.
-
-
-
-### Uppgifter
-
-Dessa uppgifter skall utföras och redovisas.
-
-1. Genomför uppgiften "[Databasen World](/website/laromaterial/uppgift/kmom01-databasen-world/)".
-
-
-
-## Resultat & Redovisning
-
-Läs [instruktionen om hur du skall redovisa](/website/laromaterial/instruktion/resultat-och-redovisning).
-
-Se till att följande frågor besvaras i din redovisningstext i din rapportsida.
-
-* Hur känns det att komma igång med databaser, klienter och SQL - är det något du ser fram emot eller fasar inför?
-* Har du jobbat med databaser eller liknande tekniker tidigare?
-* Hur gick det att komma igång med labbmiljön för MariaDB och klienterna? Flöt det på eller strulade någon del?
-* Hur gick det att genomföra övning/uppgift med databasen world? Lyckades du med den sista utmaningen?
-* Vilken är din TIL för detta kmom?
-
-TIL är en akronym för "Today I Learned" vilket leksamt anspelar på att det finns alltid nya saker att lära sig, varje dag. Man brukar lyfta upp saker man lärt sig och där man kanske hajade till lite extra över dess nyttighet eller enkelhet, eller så var det bara en ny lärdom för dagen som man vill notera.
-
-
-
-## Kommentarer & Noteringar
-
-<details>
-<summary>Plan för veckans genomgångar</summary>
-
-Följande är en plan för hur lärarteamet _kan_ lägga upp genomgångarna under veckan för detta kursmoment.
-
-
-
-### Måndag
-
-Första timmen:
-
-* Berätta om kursens upplägg, examination, inlämningar, betygsättning.
-* Berätta om kmom och vad som skall göras i kmom01.
-* Visa hur ett kursrepo ser ut för en student och hur man jobbar med det.
-* Visa hur det ser ut när man publicerar på GH Pages
-* Berätta om labbmiljön och vad som skall installeras.
-* Visa min egen labbmiljö och dubbelkolla att my.cnf fungerar.
-
-Andra timmen:
-
-* Jobba igenom delar av övningen med databasen World.
-
-
-
-### Onsdag
-
-Första timmen:
-
-* Kort om relationsdatabaser
-* Kort om MariaDB
-* Introduktion till ER-modellering
-* Använd ER-modellering för att förklara begreppen
-    * Tabeller
-    * Kolumner
-    * Datatyper i SQL
-* Öva på ER-modellering
-
-Andra timmen:
-
-* Förenklad ER-modell av databasen world för att komma igång med tankar kring ER-modelleringen
-
-
-
-### Torsdag
-
-* Labbmiljön på plats
-* Övningen med databasen World klar
-* Uppgiften med databasen world påbörjad
+kmom01
+- Block 1: Promise-demo i REPL → cheerio på hårdkodad HTML → `.trim()`-demo
+- Block 2: DevTools + scratchskript med selektorer → strängjämförelse i REPL
 
 </details>
-

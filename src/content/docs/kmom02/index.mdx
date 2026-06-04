@@ -1,170 +1,120 @@
 ---
-title: "Kmom02: Scrape 2 ⚠️"
-description: Vi fortsätter att skrapa data från webben.
+title: 'kmom02: Web scraping — sortering och analys'
+description: Fördjupa web scraping med personaldata, nyhetsfiltrering och prisanalys — sortering, räkning och regex.
 revision:
-  2026-04-21: (A, klw) Första versionen. 
+  2026-06-04: (A, klw) Första versionen.
 ---
 
 import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
-{/* TODO
-* 
-*/}
+Den här veckan fördjupar du dina scraping-kunskaper. Du hanterar inkonsistent data (tjänstledighet i anställningsrader), räknar förekomster per kategori med objekt som räknare, och omvandlar pristext till tal med regex. Mönstren du lär dig den här veckan — filtrera, sortera, aggregera — dyker upp i nästan all dataparsning.
 
-# Plan:
+## Issues
 
-* Gör uppgift 5 (Nyheter: filtrera på kategori och datum)
-* Gör uppgift 6 (Priser: funktioner och prisanalys)
-* Gör uppgift 7 (Veckans erbjudanden: rabatter och while-loop)
-* Gör uppgift 8 (Hämta alla sidor och spara som JSON-fil)
+Arbeta igenom issues i ordning. Varje issue är ett steg framåt i applikationen.
 
+Du är välkommen att skriva egna kommentarer i varje issue medan du arbetar — noteringar, frågor eller korta reflektioner om vad du lärde dig. Det hjälper dig att minnas och ger läraren inblick i din process. Stäng ett issue när du anser att det är klart.
 
+| Issue | Namn          | Vad du gör                                                                    |
+| ----- | ------------- | ----------------------------------------------------------------------------- |
+| 04    | `staff`       | Skrapa personaldata, beräkna anställningstid, hantera tjänstledighet, sortera |
+| 05    | `newsFilter`  | Skrapa nyhetstabellen, räkna per kategori med objekt som räknare, hitta senaste |
+| 06    | `parsePrice`  | Skrapa priser från alla tabeller, rensa text till tal med regex, beräkna statistik |
 
-## Läs & Studera
+Valfria issues — gör dem om du vill utforska vidare:
 
-Här kan du på egen hand studera och förbereda dig inför övningar och uppgifter.
+| Issue | Namn    | Vad du gör                                              |
+| ----- | ------- | ------------------------------------------------------- |
+| 04b   | `staff` | Lägg till sökfunktion — filtrera på namn som söksträng  |
 
+## Föreläsningar
 
+| Titel | Om |
+|---|---|
+| [Databearbetning — sortera, räkna och aggregera](https://bth-node.github.io/node-klwstud/kmom02-1-data/slides.html) | parseInt, NaN, Array.sort(), objekt som räknare, toFixed() |
+| [Regex och textparsning — omvandla rå text till tal](https://bth-node.github.io/node-klwstud/kmom02-2-regex/slides.html) | Teckenklasser, replace(), match(), isNaN(), .each() |
 
-### Föreläsning
+## Studiematerial
 
-Titta på följande inspelade föreläsningar. Föreläsningarna kan innehålla tips om läsanvisningar.
+**Läsning** — Läs igenom dessa innan du börjar med respektive issue. Det handlar inte om att memorera — det handlar om att få en bild av varför saker fungerar som de gör, så att koden känns logisk snarare än som magi du kopierar.
 
-1. [SQL introduktion och exempel](/website/laromaterial/forelasning/sql-introduktion-och-exempel/) ger dig en introduktion till frågespråket SQL.
+| Läs innan | Titel | Varför |
+|---|---|---|
+| Issue 04 | [MDN — Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) | Förklarar hur jämförelsefunktioner fungerar för sortering |
+| Issue 06 | [MDN — Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) | Grunderna i regex — du behöver förstå `/[^0-9]/g` för att rensa pristexten |
 
+**Referens** — Ha dessa öppna i en flik när du kodar. Du behöver inte läsa dem i förväg — slå upp det du behöver när du behöver det. Det är så erfarna utvecklare arbetar.
 
+| Verktyg | Länk |
+|---|---|
+| MDN — parseInt | [developer.mozilla.org — parseInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) |
+| MDN — String.prototype.match() | [developer.mozilla.org — match](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) |
+| cheerio API | [cheerio.js.org/docs/api](https://cheerio.js.org/docs/api/classes/Cheerio) |
 
-### Kurslitteratur
+## Quiz
 
-Läs följande:
+När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-1. Kursboken Databasteknik om mer SQL.
-    * Kap 8: Mer om SQL: Aggregatfunktioner, null-värden, yttre join (hoppa över  delen om yttre join)
+Quizen för kmom02 testar om du förstår hur `parseInt` och regex fungerar för att omvandla text till tal, hur ett objekt kan användas som räknare, hur `Array.sort()` med jämförelsefunktion fungerar, och varför strängjämförelse fungerar för datum i ISO-format.
 
-Det finns ytterligare ett kapitel i boken som är relaterat till bakgrunden av SQL, det går utanför kursens ram så läs endast vid intresse.
+## Redovisningstext
 
-1. Kursboken Databasteknik om databasteknikens grunder.
-    * Kap 11: Relationsalgebra
+Skriv din redovisningstext i `report/kmom02.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
+1. I uppgift 04 hanterade du ett kantfall: en rad med "Tjänstledig" i anställningsdatan. Hur identifierade du kantfallet och hur löste du det?
 
-{/*
-### Artiklar
+2. Förklara hur du använde ett objekt som räknare i uppgift 05. Varför är det ett bra mönster när du inte vet i förväg hur många kategorier som finns?
 
-Kika igenom följande artiklar.
+3. Vad gör `parseInt("1 495 kr".replace(/[^0-9]/g, ''))` steg för steg? Vad returnerar det och vad händer om strängen inte innehåller några siffror?
 
-1. XXX
-*/}
+4. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
+## Inlämning
 
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom02.md`.
+3. Committa, tagga och pusha:
 
-### Ai som lärare (instuderingsfrågor)
+```bash
+git add report/kmom02.md
+git commit -m "Add kmom02 report"
+git tag kmom02
+git push origin main --tags
+```
 
-Här finns ett antal instuderingsfrågor som hjälper dig att finna information på egen hand för att träna på de koncept som är relevanta för detta kmom.
-
-<details>
-<summary>Instuderingsfrågor</summary>
-
-1. Berätta kort om konceptet JOIN i relationsdatabaser och SELECT.
-1. Vad innebär en CROSS JOIN?
-1. Vad innebär en INNER JOIN?
-1. Vilken typ av aggregerande funktioner finns i SQL, visa några exempel.
-1. Förklara skillnaden mellan WHERE och HAVING.
-1. Förklara begreppet VYER i SQL och när kan det vara användbart?
-
-Här är en [utskrift av när en frågesession genomförts](https://chatgpt.com/share/69738697-53dc-8005-b142-c8aaae2cecc1). Dina svar kan skifta från de som visas. Var alltid kritisk till dina källor.
-
-</details>
-
-
-
-## Övningar & Uppgifter
-
-Övningar är träning inför uppgifterna. Uppgifter skall utföras och redovisas.
-
-
-
-### Övningar
-
-Jobba igenom övningarna, de förbereder dig inför uppgifterna.
-
-1. Jobba igenom övningen "[Övning databasen World: JOIN och rapporter](/website/laromaterial/ovning/world-database-join/)". Övningen jobbar vidare med databasen world och går igenom hur man slår ihop flera tabeller till en rapport med JOIN.
-
-1. Jobba igenom övningen "[Övning databasen World: Aggregerande funktioner och vyer](/website/laromaterial/ovning/world-database-aggregation/)". Övningen jobbar vidare med databasen world och går igenom nya koncept som aggregerande funktioner och vyer.
-
-{/*
-1. Verktyg för att modellera?
-
-*/}
-
-
-
-### Uppgifter
-
-Följande uppgifter skall utföras och resultatet skall redovisas.
-
-1. Genomför uppgiften "[Databasen World: JOIN](/website/laromaterial/uppgift/kmom02-join/)".
-
-
-
-## Resultat & Redovisning
-
-Läs [instruktionen om hur du skall redovisa](/website/laromaterial/instruktion/resultat-och-redovisning).
-
-Se till att följande frågor besvaras i din redovisningstext i din rapportsida.
-
-* Jämför SQL med andra sätt att programmera, relatera till några av de programmeringsspråk du kan.
-* Förklara för någon som inte kan databaser, vad JOIN gör och hur det fungerar.
-* Hur gick det att genomföra övningar och uppgifterna, berätta gärna vad som var enkelt och vad som var mer utmanande att hantera?
-
-* Vilken är din TIL för detta kmom?
-
-
-
-## Kommentarer & Noteringar
+## Plan för veckans genomgång
 
 <details>
-<summary>Plan för veckans genomgångar</summary>
+<summary>Genomgång, ca 2 timmar</summary>
 
-Följande är en plan för hur lärarteamet _kan_ lägga upp genomgångarna under veckan för detta kursmoment.
+Genomgången visar begreppen och hur de fungerar — studenterna gör uppgifterna själva. Använd korta isolerade exempel i terminalen, inte studenternas kod.
 
+### Block 1 — parseInt, NaN och sortering (60 min)
 
+Visa hur `parseInt` beter sig med olika input, vad `NaN` är och varför `Array.sort()` inte fungerar utan en jämförelsefunktion. Alla dessa är lätta att missa i studentkod utan att förstå varför.
 
-### Måndag
+- Visa `parseInt` i Node REPL på olika strängar: `"1991"`, `"42 år"`, `"Startade 1991"` — vilket ger NaN?
+- Visa vad `NaN` är: `typeof NaN`, `NaN === NaN`, `isNaN(NaN)` — de oväntade svaren
+- Visa `.match(/\d{4}/g)` på strängar med och utan tal — vad returneras om inget matchar?
+- Visa `?.at(0)` vs `.at(0)` — vad händer om `.match()` returnerar `null`?
+- Visa `[10, 9, 2, 1].sort()` i REPL — fel ordning — förklara att sortering sker som strängar
+- Visa `[10, 9, 2, 1].sort((a, b) => a - b)` och `(a, b) => b - a` — rätt ordning och varför
+- Visa `[{name:"B",n:2},{name:"A",n:10}].sort((a,b) => b.n - a.n)` — sortera objekt
 
-Första timmen:
+### Block 2 — Objekt som räknare och regex (50 min)
 
-* Repetera SELECT mot databasen world.
-* Prata om JOIN. Bygg ihop en trippel JOIN av databasen World.
-* Gör en vy och prata om konceptet vyer.
+Visa räknarmönstret och regex-rensning med minimala exempel. Poängen är att studenten förstår *varför* dessa mönster ser ut som de gör.
 
-Andra timmen:
+- Visa räknarmönstret isolerat i REPL med tre kategorier: `let x = {}; x['A']++` → `NaN`, lägg till `x['A'] ??= 0; x['A']++` → `1`
+- Visa att nycklar skapas dynamiskt — man behöver inte veta kategorierna i förväg
+- Visa regex steg för steg: `"1 495 kr"` → `.replace(/[^0-9]/g, '')` → `"1495"` → `parseInt` → `1495`
+- Visa vad `[^0-9]` matchar: kör `.match(/[^0-9]/g)` på `"1 495 kr"` i REPL — visar exakt vilka tecken som tas bort
+- Visa `parseInt("")` → `NaN` och varför `isNaN`-kontrollen är nödvändig
+- 5 min: vad kmom03 handlar om — parallella anrop och autentisering
 
-* Träna på aggregerande funktioner med databasen World.
-* SUM, AVG, COUNT, MIN, MAX
-* GROUP_CONCAT
-* Prata om GROUP BY och HAVING.
-
-
-
-### Onsdag (preliminär, ej klar)
-
-Första timmen:
-
-* ER-modellering med relationer
-* Verktyg för modellering: 
-    * dbdiagram.io
-    * draw.io
-    * PlantUML
-
-Andra timmen:
-
-* ER-modellering, övning med WoW
-
-### Torsdag
-
-* Övning "join" med databasen World klar
-* Övning "aggregate" med databasen World klar
-* Veckans uppgift med databasen world påbörjad
+kmom02
+- Block 1: `parseInt`/NaN-demo i REPL → `.match()`/`?.` → `Array.sort()` utan och med jämförelsefunktion
+- Block 2: Räknarmönstret isolerat → regex steg för steg → `isNaN`-kontrollen
 
 </details>
