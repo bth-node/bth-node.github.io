@@ -1,0 +1,207 @@
+---
+title: "Jobba med Git ⚠️" 
+description: Vi tittar på ett antal av de grundläggande kommandona i Git.
+author: mos
+revision:
+    "2026-06-11": "(B, mos) Bygg om för ny struktur med kursrepo."
+    "2025-06-25": "(A, mos) Första utkastet."
+sidebar:
+    order: 0040
+---
+
+import Figure from '@components/CustomFigure.astro';
+import YouTube from '@components/YouTube.astro';
+
+{/* TODO
+* Uppdatera author i package.json
+*/}
+
+Ditt kursrepo är ett git repo och de filer du skapar behöver du också lägga till i git repot via de kommandon som git erbjuder.
+
+
+:::danger
+Denna artikel behöver skrivas om nu när studenten får sitt kursrepo och ge en introduktion till de git-kommandon som behövs innan inlämningen av kmom01.
+:::
+
+## git status
+
+Börja med att kontrollera status för ditt repo med kommandot `git status`.
+
+```console title="Kontrollera status för git repot (kursrepot)."
+git status
+```
+
+Det kan se ut så här.
+
+import git1 from '@assets/kursrepo-utvecklingsmiljo/git1.png';
+
+<Figure 
+    src={git1}
+    caption="Kontrollera status på ditt repo med git status."
+/>
+
+Texten säger att filen `.editorconfig` ännu inte är en del av ditt repo.
+
+
+
+## git add 
+
+Låt oss lägga till filen som saknas med kommandot `git add`.
+
+```console title="Lägg till filen .editorconfig till repot."
+git add .editorconfig
+```
+
+Som ett alternativ kan du lägga till samtliga filer som ännu inte är en del av repot, enligt rapporten från `git status`.
+
+```console title="Lägg till samtliga filer som saknas enligt git status."
+git add .
+```
+
+När du lagt till filen kan du köra `git status` igen.
+
+Det kan se ut så här.
+
+import git2 from '@assets/kursrepo-utvecklingsmiljo/git2.png';
+
+<Figure 
+    src={git2}
+    caption="Kontrollera status på ditt repo med git status."
+/>
+
+Nu är filen en del av repot, men ändringarna är ännu inte committade.
+
+
+
+## git commit
+
+För att spara ändringarna till git repot så kör vi kommandot `git commit` och samtidigt anger vi ett committ-meddelande om vad ändringen innebär. Dessa meddleande blir en del av repots committ-historik som berättar en historia om hur repot har utvecklats och förändrats.
+
+```console title="Spara (samtliga) ändringarna i repot med git commit."
+git commit -m "Add the file .editorconfig with default settings for the course"
+```
+
+Kör `git status` när du committat, för att se hur läget ser ut.
+
+Det kan se ut så här.
+
+import git3 from '@assets/kursrepo-utvecklingsmiljo/git3.png';
+
+<Figure 
+    src={git3}
+    caption="Nu är ändringarna committade till git repot."
+/>
+
+Du kan nu utläsa från `git status` att din lokala branch är ett steg före din remote origin/main som innebär att din lokala kopia har en mer ändring än den version av repot som ligger på GitHub.
+
+När du committar bör det vara commits som du kan beskriva i ett enkelt och tydligt meddelande. Om det blir svårt att skriva ett kort meddelande om din commit så innehåller den troligen för mycket saker. Men så här i början är det viktigare att göra många commits än att skriva perfekta meddelanden till commit-historiken, det kommer med träningen.
+
+Här är ett par korta regler när det kommer till commit-meddelanden.
+
+1. Börja med stor bokstav
+1. Sluta ej med punkt
+
+## git push
+
+För att ladda upp ändringarna till GitHub, din remote, så använder du kommandot `git push`. Då kommer samtliga lokala ändringar at tladdas upp till din remote (GitHUb) så att både din remote och din lokala version är "i synk" och har samma innehåll och samma commit-historik.
+
+Kör nu kommandot `git push`.
+
+```console title="Ladda upp dina lokala ändringar till din remote på GitHub."
+git push
+```
+
+Det kan se ut så här.
+
+import git4 from '@assets/kursrepo-utvecklingsmiljo/git4.png';
+
+<Figure 
+    src={git4}
+    caption="Dina lokala ändringar synkas upp till din remote på GitHub."
+/>
+
+Du kan se hur utskriften från `git status` berättar att din lokala branch är i synk med din remote.
+
+
+
+## git pull
+
+Om läget hade varit det motsatta, att den version som ligger på GitHub är mer aktuell än din lokala kopia, då löser du det med kommandot `git pull` som laddar ned ändringarna från din remote på GitHub.
+
+Du kan köra kommandot nu, inget kommer att hända eftersom din remote (GitHub) och din lokala version av git repot är "i synk".
+
+```console title="Uppdatera ditt lokala repo med ändringar som är gjorde på din remote (GitHub)."
+git pull
+```
+
+Det kan se ut så här.
+
+import git5 from '@assets/kursrepo-utvecklingsmiljo/git5.png';
+
+<Figure 
+    src={git5}
+    caption="Det finns inget att hämta från din remote då du redan är i sync."
+/>
+
+Om du är osäker på att du är i synk så kan du alltid göra `git status` tillsammans med `git pull` och `git push` tills du är i sync. Ta det som en vana att alltid pusha ditt jobb till din remote, innan du lämnar din dator, så slipper du glömma det.
+
+
+
+## git log
+
+Den här delen är överkurs men kan vara intressant att jobba igenom.
+
+För varje commit du gör till ett git repo så sparas det i en git commit historik, en git logg. Man kan få fram en översikt av dessa commit-meddelanden med kommandot `git log`.
+
+Kör följande kommando för att se hur en commit-historik kan presenteras.
+
+```console title="Kommando för att visa commit-historik för ett git repo."
+git log
+```
+
+Så här kan det till exempel se ut. Din egen utskrift kan se annorlunda ut, beroende av hur din egen historik ser ut.
+
+import git6 from '@assets/kursrepo-utvecklingsmiljo/git6.png';
+
+<Figure 
+    src={git6}
+    caption="Utskriften från git log visar commit-historiken."
+/>
+
+Man kan förändra utskriften från kommandot genom att skicka argument till kommandot, så här.
+
+```console title="En annorlunda formatterad utskrift av git commit historiken."
+git log --oneline --graph --decorate
+```
+
+Det kan se ut så här.
+
+import git7 from '@assets/kursrepo-utvecklingsmiljo/git7.png';
+
+<Figure 
+    src={git7}
+    caption="Utskriften visar nu varje commit på en egen rad."
+/>
+
+Om du inte kommer ihåg det långa kommandot så kan du skapa ett git alias för det, så blir det lättare att skriva det i fortsättningen. Så här skapar du ett git alias för det långa kommandot, när aliaset är skapat så räcker det att skriva `git gl` för att visa historiken.
+
+```console title="Skapa ett git alias och använda det."
+# Create a git alias to view the log
+git config --global alias.lg "log --oneline --graph --decorate"
+
+# Execute the git alias
+git lg
+```
+
+Det kan se ut så här när du först skapar aliaset och därefter använder det.
+
+import git8 from '@assets/kursrepo-utvecklingsmiljo/git8.png';
+
+<Figure 
+    src={git8}
+    caption="Skapa ett git alias och använda det."
+/>
+
+Nu räcker det alltså om du i fortsättningen skriver `git lg` för att se den formatterade varianten av git commit historik.
+
+Nu i början är det kanske inte så intressant att titta i historiken, men ju mer du använder git och ju mer erfaren du blir så kan det också bli allt viktigare att ha koll på hur din commit historik ser ut.

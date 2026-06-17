@@ -1,0 +1,103 @@
+---
+title: Node 
+description: Programmingsmiljö för JavaScript på servern med Node.js.
+sidebar:
+    order: 180
+---
+
+{/* import Figure from '@components/CustomFigure.astro'; */}
+import YouTube from '@components/YouTube.astro';
+
+<YouTube id="S9P1MQqatZs" />
+
+import nodejslogo from '@assets/nodejs-logo.png';
+import CustomFigure from '@components/CustomFigure.astro'
+import { Steps } from '@astrojs/starlight/components';
+
+<CustomFigure
+  src={nodejslogo}
+  alt="Node.js Logo"
+  caption="This is the Node.js logo"
+  width={200}
+  height={300}
+/>
+
+
+
+Installera Node.js och npm
+===================================
+
+Vi skall installera en miljö för JavaScript. Det handlar om Node.js och pakethanteraren npm. Vi ska installera LTS versionen av Node.js, vilket står för Long Term Support och är en stabil version.
+
+Miljön innebär att du kan köra JavaScript på din dator och du kan ta del av alla de program och paket som erbjuds via pakethanteraren npm.
+
+
+
+Installationsanvisningar
+-------------------------------
+
+Dessa anvisningar göller för Windows (WSL), Mac eller Linux
+
+En vanlig metod för att installera och hantera Nodejs är att använda "nvm" (node version manager).
+<Steps>
+
+1. ```console title="Hämta nvm med cURL"
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+   ```
+
+   
+
+2. ```console title="Installera senaste LTS versionen"
+   nvm install --lts
+   ```
+
+</Steps>
+
+Vi kan även använda nvm för att skifta mellan installerade versioner men det är inget vi behöver göra i kursen.
+
+:::caution
+För att din miljö ska känna till det nyinstallerade `node` behöver du starta om terminalen.
+:::
+
+Verifiera att Node.js fungerar
+-------------------------------
+
+Du kan nu köra JavaScript med node. Pröva följande.
+
+```console title="Skriv ut 'Hello World' med node"
+node --eval "console.log('Hello World')"
+```
+
+Du kan också köra node interaktivt och evaluera JavaScript rad för rad. Programmet visar att den är redo för inmatning med prompten `>`.
+
+
+```console title="Starta node interaktivt"
+$ node
+> console.log("Hej")
+Hej
+>
+```
+
+Du kan också låta nodejs köra JavaScript-program som finns i filer.
+
+```console title="Exekvera JavaScript från en fil"
+$ echo "console.log('Hej')" > hello.js
+$ node hello.js
+Hej
+```
+
+
+
+Läs mer
+-------------------------------
+
+Du kan läsa mer om [Node.js på webbplatsen](https://nodejs.org/).
+
+Du kan läsa mer om [npm på webbplatsen](https://www.npmjs.com/). Där kan du också söka efter de paket som finns publicerade.
+
+
+
+Avslutningsvis
+----------------------------
+
+Bra, nu har du en fungerande installation av node och npm.

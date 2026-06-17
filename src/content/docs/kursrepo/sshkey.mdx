@@ -1,0 +1,121 @@
+---
+title: "SSH-nycklar för autentisering mot GitHub" 
+description: Lägg till ssh-nycklar för att authenticera din användare mot GitHub.
+author: mos
+revision:
+    "2025-06-24": "(PA, mos) Första utkastet."
+sidebar:
+    order: 0020
+---
+
+import Figure from '@components/CustomFigure.astro';
+import YouTube from '@components/YouTube.astro';
+
+Så här skapar du ssh-nycklar lokalt i din terminal och lägger till dem i ditt konto på GitHub så att du kan authenticera dig mot GitHub som rätt användare.
+
+
+
+## Skapa ssh-nycklar lokalt
+
+Det finns olika sätt att skapa nycklar och det finns olika typer av nycklar som kan skapas. I denna guiden försöker vi skapa nycklarna på enklaste möjliga sätt.
+
+Kör följande kommando för att skapa nycklarna, redigera kommandot och skriv in din egna mailadress. Det spelar ingen roll vilken mailadress du väljer, det är bara för informationssyfte.
+
+```console title="Generera ett nyckelpar."
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+
+:::note
+Om du redan har ett nyckelpar så bör du undvika att skriva över det, då kan du istället använda det nyckelparet som du redan har.
+:::
+
+När du får en prompt för att ange en lösenordsfras så kan du bara trycka enter.
+
+Det kan se ut så här när du är klar.
+
+import sshkey1 from '@assets/kursrepo/sshkey1.png';
+
+<Figure 
+    src={sshkey1}
+    caption="Nu har du genererat ssh-nycklar."
+/>
+
+I utskriften från kommandot ser du i vilka filer som kommandot placerade ditt nyckelpar.
+
+
+
+## Kopiera din publika nyckel
+
+Du kan öppna din publika nyckel i vscode på följande sätt.
+
+```console title="Hur du kan öppna den publika nyckeln i vscode."
+code ~/.ssh/id_ed25519.pub
+```
+
+Nu blir det enkelt att kopiera innehållet i den filen, det är bara att markera all text i filen.
+
+Här finns fler andra varianter på hur du kan kopiera innehållet i filen.
+
+<details>
+<summary>Visa innehåll med cat och kopiera från terminalen.</summary>
+
+```console title="Visa filens innehåll med kommandot cat."
+cat ~/.ssh/id_ed25519.pub
+```
+
+Nu kan du markera filens innehåll i terminalen och kopiera, vanligtvis via `ctrl-c` eller `shift ctrl c` beroende av vilken terminal du har.
+
+</details>
+
+
+
+## Lägg till den publika nyckeln på GitHub
+
+Gå till din användare på GitHub (klicka på din bild/avatar) och klicka på "Settings -> SSH and GPG keys".
+
+Klicka på "New SSH key". Direktlänken till denna konfiguration är [`https://github.com/settings/ssh/new`](https://github.com/settings/ssh/new).
+
+Det kan se ut så här.
+
+import sshkey2 from '@assets/kursrepo/sshkey2.png';
+
+<Figure 
+    src={sshkey2}
+    caption="Nu är du redo att lägga till en ny ssh-nyckel till GitHub."
+/>
+
+Du kan lägga till en titel, det är en godtycklig titel och bara för din egen del så du kan komma ihåg vad just denna nyckeln är till och var den finns.
+
+Därefter kopierar du in din publika nyckel som finns i filen `~/.ssh/id_ed25519.pub`.
+
+Det kan se ut så här.
+
+import sshkey3 from '@assets/kursrepo/sshkey3.png';
+
+<Figure 
+    src={sshkey3}
+    caption="Alla fält är ifyllda, nu är det bara att lägga till nyckeln."
+/>
+
+Klicka på knappen för att lägga till din nyckel.
+
+
+
+## Testa nyckeln mot GitHub
+
+Nu är du redo att testa att nyckeln fungerar, du kan göra det via följande kommando.
+
+```console  title="Kontroller att du kan koppla dig till GitHub med din ssh-nyckel."
+ssh -T git@github.com
+```
+
+Det kan se ut så här när det fungerar.
+
+import sshkey4 from '@assets/kursrepo/sshkey4.png';
+
+<Figure 
+    src={sshkey4}
+    caption="Ett välkomstmeddelande berättar att du kan koppla dig mot GitHub med en ssh-nyckel."
+/>
+
+Nu är du redo att jobba mot GitHub via ssh. Om du jobbar på flera datorer så behöver du antingen generera nya nyckelpar för varje maskin, eller så behöver du kopiera den privata nyckeln till varje maskin du vill använda.
