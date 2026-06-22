@@ -1,5 +1,5 @@
 ---
-title: Versioner av kursen
+title: Versioner av kursen ⚠️
 description: Historiska versioner av kurs och kursmaterial.
 ---
 
