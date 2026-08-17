@@ -84,39 +84,3 @@ git push origin main --tags
 ```
 
 Om du behöver åtgärda något kan du tagga om med `v2.x.x` för att trigga GitHub actions igen.
-
-## Plan för veckans genomgång
-
-<details>
-<summary>Genomgång, ca 2 timmar</summary>
-
-Genomgången visar begreppen och hur de fungerar — studenterna gör uppgifterna själva. Använd korta isolerade exempel i terminalen, inte studenternas kod.
-
-### Block 1 — parseInt, NaN och sortering (60 min)
-
-Visa hur `parseInt` beter sig med olika input, vad `NaN` är och varför `Array.sort()` inte fungerar utan en jämförelsefunktion. Alla dessa är lätta att missa i studentkod utan att förstå varför.
-
-- Visa `parseInt` i Node REPL på olika strängar: `"1991"`, `"42 år"`, `"Startade 1991"` — vilket ger NaN?
-- Visa vad `NaN` är: `typeof NaN`, `NaN === NaN`, `isNaN(NaN)` — de oväntade svaren
-- Visa `.match(/\d{4}/g)` på strängar med och utan tal — vad returneras om inget matchar?
-- Visa `?.at(0)` vs `.at(0)` — vad händer om `.match()` returnerar `null`?
-- Visa `[10, 9, 2, 1].sort()` i REPL — fel ordning — förklara att sortering sker som strängar
-- Visa `[10, 9, 2, 1].sort((a, b) => a - b)` och `(a, b) => b - a` — rätt ordning och varför
-- Visa `[{name:"B",n:2},{name:"A",n:10}].sort((a,b) => b.n - a.n)` — sortera objekt
-
-### Block 2 — Objekt som räknare och regex (50 min)
-
-Visa räknarmönstret och regex-rensning med minimala exempel. Poängen är att studenten förstår *varför* dessa mönster ser ut som de gör.
-
-- Visa räknarmönstret isolerat i REPL med tre kategorier: `let x = {}; x['A']++` → `NaN`, lägg till `x['A'] ??= 0; x['A']++` → `1`
-- Visa att nycklar skapas dynamiskt — man behöver inte veta kategorierna i förväg
-- Visa regex steg för steg: `"1 495 kr"` → `.replace(/[^0-9]/g, '')` → `"1495"` → `parseInt` → `1495`
-- Visa vad `[^0-9]` matchar: kör `.match(/[^0-9]/g)` på `"1 495 kr"` i REPL — visar exakt vilka tecken som tas bort
-- Visa `parseInt("")` → `NaN` och varför `isNaN`-kontrollen är nödvändig
-- 5 min: vad kmom03 handlar om — parallella anrop och autentisering
-
-kmom02
-- Block 1: `parseInt`/NaN-demo i REPL → `.match()`/`?.` → `Array.sort()` utan och med jämförelsefunktion
-- Block 2: Räknarmönstret isolerat → regex steg för steg → `isNaN`-kontrollen
-
-</details>
