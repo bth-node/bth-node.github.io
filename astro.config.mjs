@@ -55,11 +55,11 @@ export default defineConfig({
 					collapsed: true,
 					autogenerate: { "directory": "kursrepo" }
 				},
-				{
-					label: 'Kom igång',
-					collapsed: true,
-					autogenerate: { directory: 'kom-igang' },
-				},
+				// {
+				// 	label: 'Kom igång',
+				// 	collapsed: true,
+				// 	autogenerate: { directory: 'kom-igang' },
+				// },
 				// {
 				// 	label: 'Kmom01',
 				// 	collapsed: true,

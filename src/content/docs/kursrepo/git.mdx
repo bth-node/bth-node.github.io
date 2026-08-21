@@ -3,8 +3,7 @@ title: "Jobba med Git"
 description: Vi tittar på ett antal av de grundläggande kommandona i Git.
 author: mos
 revision:
-    "2026-06-11": "(B, mos) Bygg om för ny struktur med kursrepo."
-    "2025-06-25": "(A, mos) Första utkastet."
+    "2026-08-21": "(A, mos) Kopierad från webtec."
 sidebar:
     order: 0040
 ---
@@ -18,10 +17,11 @@ import YouTube from '@components/YouTube.astro';
 
 Ditt kursrepo är ett git repo och de filer du skapar behöver du också lägga till i git repot via de kommandon som git erbjuder.
 
+Här får du se ett antal kommandon som är grundläggande i git och de hjälper dig när du skall jobba igenom kursen.
 
-:::danger
-Denna artikel behöver skrivas om nu när studenten får sitt kursrepo och ge en introduktion till de git-kommandon som behövs innan inlämningen av kmom01.
-:::
+Du kan provköra kommandona mot ditt eget git repo, men notera att du kan få olika resultat om du jämför med artikelns bilder.
+
+
 
 ## git status
 
@@ -40,13 +40,15 @@ import git1 from '@assets/kursrepo-utvecklingsmiljo/git1.png';
     caption="Kontrollera status på ditt repo med git status."
 />
 
-Texten säger att filen `.editorconfig` ännu inte är en del av ditt repo.
+Texten säger att filen `.editorconfig` ännu inte är en del av ditt repo. Men det kan alltså se annorlunda ut för ditt eget repo.
 
 
 
 ## git add 
 
-Låt oss lägga till filen som saknas med kommandot `git add`.
+Låt oss, som ett exempel, lägga till filen som saknas med kommandot `git add`.
+
+Vill du själv prova att lägga till en ny fil till ditt repo så kan du skapa en godtycklig fil i terminalen eller via vscode.
 
 ```console title="Lägg till filen .editorconfig till repot."
 git add .editorconfig
@@ -75,7 +77,7 @@ Nu är filen en del av repot, men ändringarna är ännu inte committade.
 
 ## git commit
 
-För att spara ändringarna till git repot så kör vi kommandot `git commit` och samtidigt anger vi ett committ-meddelande om vad ändringen innebär. Dessa meddleande blir en del av repots committ-historik som berättar en historia om hur repot har utvecklats och förändrats.
+För att spara ändringarna till git repot så kör vi kommandot `git commit` och samtidigt anger vi ett commit-meddelande om vad ändringen innebär. Dessa meddelande blir en del av repots commit-historik som berättar en historia om hur repot har utvecklats och förändrats.
 
 ```console title="Spara (samtliga) ändringarna i repot med git commit."
 git commit -m "Add the file .editorconfig with default settings for the course"
@@ -202,6 +204,6 @@ import git8 from '@assets/kursrepo-utvecklingsmiljo/git8.png';
     caption="Skapa ett git alias och använda det."
 />
 
-Nu räcker det alltså om du i fortsättningen skriver `git lg` för att se den formatterade varianten av git commit historik.
+Nu räcker det alltså om du i fortsättningen skriver `git lg` för att se den formaterade varianten av git commit historik.
 
 Nu i början är det kanske inte så intressant att titta i historiken, men ju mer du använder git och ju mer erfaren du blir så kan det också bli allt viktigare att ha koll på hur din commit historik ser ut.
