@@ -16,6 +16,9 @@ export default defineConfig({
 			plugins: [
 				starlightImageZoom(),
 			],
+			components: {
+				Head: './src/components/Head.astro',
+			},
 			title: 'Kursen node',
 			favicon: 'favicon.png',
 			logo: {
@@ -60,46 +63,13 @@ export default defineConfig({
 				// 	collapsed: true,
 				// 	autogenerate: { directory: 'kom-igang' },
 				// },
-				// {
-				// 	label: 'Kmom01',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom01' },
-				// },
-				// {
-				// 	label: 'Kmom02',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom02' },
-				// },
-				// {
-				// 	label: 'Kmom03',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom03' },
-				// },
-				// {
-				// 	label: 'Kmom04',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom04' },
-				// },
-				// {
-				// 	label: 'Kmom05',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom05' },
-				// },
-				// {
-				// 	label: 'Kmom06',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom06' },
-				// },
-				// {
-				// 	label: 'Kmom10',
-				// 	collapsed: true,
-				// 	autogenerate: { directory: 'kmom10' },
-    //     },
-        {
-					label: 'Kursmoment',
-					collapsed: true,
-					autogenerate: { directory: 'kmom' },
-				},
+				{ slug: 'kmom01' },
+				{ slug: 'kmom02' },
+				{ slug: 'kmom03' },
+				{ slug: 'kmom04' },
+				{ slug: 'kmom05' },
+				{ slug: 'kmom06' },
+				{ slug: 'kmom10' },
 				// {
 				// 	label: 'Studieguide',
 				// 	collapsed: true,
