@@ -1,5 +1,5 @@
 ---
-title: Bedömning och betygsättning ⚠️
+title: Bedömning och betygsättning
 description: Hur sätts kursens betyg.
 sidebar:
     order: 150
@@ -86,4 +86,4 @@ Följande tabell visar hur slutbetyget räknas fram baserat på antalet poäng.
 | D | G | G | 3 | BRA – en fullgod prestation. | 60+ | 
 | E | G | G | 3 | GODKÄNT – resultatet uppfyller minimikriterierna. | 55+ | 
 | FX | UX | - | - | KOMPLETTERA – mer arbete krävs innan betyg kan sättas. | 54- | 
-| F | U | U | U | OTILLRÄCKLIGT – (avsevärt) mer arbete krävs. | 50- | 
+| F | U | U | U | OTILLRÄCKLIGT – (avsevärt) mer arbete krävs. | 50- |

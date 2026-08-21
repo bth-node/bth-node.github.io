@@ -1,5 +1,5 @@
 ---
-title: Ladok ⚠️
+title: Ladok
 description: Hur mappas kursens moment mot de olika Ladok-momenten.
 sidebar:
     order: 140
@@ -14,4 +14,3 @@ Enligt kursplanen finns ett antal ladokmoment som registreras i Ladok när de ä
 | kmom10                      | Inlämningsuppgift 3 á 2.5hp   | A-F, Fx     |
 
 Den sista inlämningen bestämmer kursens slutbetyg vilket utfärdas när samtliga moment godkänts.
-
