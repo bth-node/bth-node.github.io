@@ -95,14 +95,14 @@ export default defineConfig({
 					collapsed: true,
 					autogenerate: { directory: 'kmom10' },
 				},
-				{
-					label: 'Studieguide',
-					collapsed: true,
-					autogenerate: { directory: 'studieguide' },
-					/* items: [
-						{ label: 'Example Guide', slug: 'guides/example' },
-					],*/
-				},
+				// {
+				// 	label: 'Studieguide',
+				// 	collapsed: true,
+				// 	autogenerate: { directory: 'studieguide' },
+				// 	/* items: [
+				// 		{ label: 'Example Guide', slug: 'guides/example' },
+				// 	],*/
+				// },
 				{
 					label: 'Övrigt',
 					collapsed: true,
