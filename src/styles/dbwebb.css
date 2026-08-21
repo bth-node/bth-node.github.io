@@ -12,18 +12,23 @@
 	--sl-color-gray-6: #1f2a1c;
 	--sl-color-black: #151a13;
 }
-/* Active sidebar link: dark text for readability on accent background */
-a[aria-current='page'],
-a[aria-current='page']:hover,
-a[aria-current='page']:focus {
-	color: #000 !important;
-}
-
 /* Make top-level direct sidebar links look like nested file links */
 ul.top-level > li > a.large {
 	font-size: var(--sl-text-sm);
 	font-weight: normal;
 	color: var(--sl-color-gray-2);
+}
+
+/* Active top-level sidebar link: override the .large rule above */
+:root[data-theme='dark'] ul.top-level > li > a.large[aria-current='page'],
+:root[data-theme='dark'] ul.top-level > li > a.large[aria-current='page']:hover,
+:root[data-theme='dark'] ul.top-level > li > a.large[aria-current='page']:focus {
+	color: #000;
+}
+:root[data-theme='light'] ul.top-level > li > a.large[aria-current='page'],
+:root[data-theme='light'] ul.top-level > li > a.large[aria-current='page']:hover,
+:root[data-theme='light'] ul.top-level > li > a.large[aria-current='page']:focus {
+	color: #fff;
 }
 
 /* Light mode colors. */
