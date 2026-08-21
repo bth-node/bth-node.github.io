@@ -1,0 +1,229 @@
+---
+title: 'kmom10: Projekt och examination'
+description: Examinerande kursmomen över två veckor — grundkrav för godkänt och tre optionella krav för högre betyg.
+revision:
+  2026-05-13: (A, mos) Första versionen.
+  2026-05-18: (B, mos) Ny struktur med grundkrav och tre betygsnivåer.
+  2026-05-19: (C, mos) Utökningar, Bruno-krav, redovisning och presentation.
+---
+
+import Figure from '@components/CustomFigure.astro';
+import YouTube from '@components/YouTube.astro';
+
+Det här kursmomentet löper över två veckor och är kursens examinerande del. Du visar att du behärskar det du har byggt, skriver en sammanhållen redovisning av hela kursens gång och väljer hur djupt du vill gå beroende på vilket betyg du siktar på.
+
+---
+
+## Grundkrav — betyg D och E
+
+För ett godkänt betyg ska hela din applikation fungera och alla obligatoriska issues vara avslutade.
+
+### Applikationen ska fungera
+
+Gå igenom listan och verifiera att varje del fungerar:
+
+| Funktionalitet                                        | Issue |
+| ----------------------------------------------------- | ----- |
+| Frontenden laddas via Express                         | 03    |
+| `GET /health` returnerar `{ status: 'ok' }`           | 03    |
+| `GET /api/doc` returnerar API-dokumentation           | 04b   |
+| `GET /api/users` returnerar användare från databasen  | 05    |
+| Registrering skapar en ny användare                   | 06    |
+| Inloggning sätter en httpOnly-cookie                  | 06b   |
+| `GET /api/me` kräver inloggning                       | 07    |
+| Meddelanden kan skapas och hämtas                     | 07b   |
+| Meddelanden kan redigeras och raderas av ägaren       | 07c   |
+| Realtidschatten fungerar mellan flera webbläsarflikar | 08    |
+| Live-flödet uppdateras utan omladdning                | 09    |
+
+### Utöka applikationen
+
+Lägg till två konkreta utökningar i din applikation. Beskriv implementationen och dina designbeslut i redovisningstexten.
+
+**Sökning på användare**
+
+Utöka `GET /api/users` med en valfri query-parameter `name` som filtrerar resultatet:
+
+```
+GET /api/users?name=alice   → returnerar användare vars namn innehåller "alice" (case-insensitive)
+GET /api/users              → returnerar alla användare (oförändrat beteende)
+```
+
+Verifiera att sökningen fungerar i Bruno och att `GET /api/users` utan parameter fortfarande returnerar alla användare.
+
+När du lägger till `GET /api/users?name=` i `/api/doc` låser frontenden upp en sökruta i Users-fliken — du kan då testa sökningen direkt i webbläsaren.
+
+**Profiluppdatering**
+
+Lägg till `PATCH /api/me` — en skyddad route som låter den inloggade användaren uppdatera sitt namn och/eller sin avatar:
+
+```
+PATCH /api/me  { "name": "Alice B" }            → uppdaterar namn, behåller avatar
+PATCH /api/me  { "avatar": "bob" }              → uppdaterar avatar, behåller namn
+PATCH /api/me  { "name": "Alice B", "avatar": "bob" }  → uppdaterar båda
+```
+
+Routen kräver inloggning via `authMiddleware`. Eftersom det är PATCH ska bara de fält som skickas med uppdateras — saknas ett fält ska det befintliga värdet behållas. Returnera det uppdaterade användardokumentet.
+
+När du lägger till `PATCH /api/me` i `/api/doc` låser frontenden upp en "Edit profile"-knapp i Dashboard-fliken — du kan då testa profiluppdateringen direkt i webbläsaren.
+
+Lägg till två Bruno-filer i `bruno/dashboard/` för att verifiera den partiella uppdateringen:
+
+| Fil | Body | Vad den verifierar |
+|---|---|---|
+| `patch-me-name.bru` | `{ "name": "..." }` | `res.status` är 200, `res.body.name` är det nya värdet |
+| `patch-me-avatar.bru` | `{ "avatar": "..." }` | `res.status` är 200, `res.body.avatar` är det nya värdet |
+
+Använd `assert`-blocket i Bruno för att verifiera svaret — se befintliga filer i `bruno/` som referens.
+
+---
+
+## Optionella krav — betyg C, B och A
+
+Varje krav höjer betyget ett steg. Krav 1 och krav 2 är fristående — du behöver inte göra ett för att göra det andra. Krav 3 kräver att båda är avklarade. Beskriv vad du gjort och varför i redovisningstexten.
+
+---
+
+### Krav 1: Terminalklienten
+
+Bygg en fungerande terminalklient mot ditt API med `@dbwebb/tui`.
+
+**Grundkrav för klienten:**
+
+Klara issue 04e (TUI-klient) plus minst **två** av följande:
+
+| Issue | Kommando                            | Vad det testar                                  |
+| ----- | ----------------------------------- | ----------------------------------------------- |
+| 07a   | `backend login` / `backend logout`  | POST med auth, httpOnly-cookie som raw header   |
+| 07d   | `backend messages` / `backend post` | Authenticated GET och POST                      |
+| 09b   | `backend stream`                    | SSE-konsumtion med `for await`, AbortController |
+| 08b   | `backend chat`                      | socket.io-client, Promise, SIGINT, readline     |
+
+Alla valda kommandon ska fungera mot din körande server. Visa och beskriv dem i redovisningstexten.
+
+---
+
+### Krav 2: Tester och kodtäckning
+
+Utöka testsviten från issue 04d till att täcka fler delar av applikationen.
+
+**Krav:**
+
+- Nå minst **70 % radtäckning** på route-filerna (`src/routes/`) med `npm run test:coverage`
+- Skriv tester för minst **två** av följande:
+  - `POST /auth/register` — lyckat registrering, duplikat e-post (409), saknade fält (400)
+  - `POST /auth/login` — lyckad inloggning, fel lösenord (401)
+  - `GET /api/messages` — kräver inloggning (401), returnerar rätt data
+  - `POST /api/messages` — skapar meddelande, avvisar tomt text (400)
+
+Testerna ska köra med `npm test` utan beroende av en riktig MongoDB-instans — använd `mongodb-memory-server` (se issue 103) eller mocka anslutningen.
+
+Beskriv vad du testade och varför du valde just de fallen i redovisningstexten.
+
+---
+
+### Krav 3: Eget val
+
+För att lösa detta krav måste du även ha löst krav 1 och krav 2.
+
+Välj och implementera en backend-feature som inte ingår i de obligatoriska issues. Du bestämmer vad — men du måste motivera valet och dokumentera implementationen.
+
+**Krav:**
+
+- Funktionen ska vara implementerad och fungera
+- Beskriv vad du valde och varför i redovisningstexten
+- Reflektera över de designbeslut du gjorde
+
+**Inspiration** — dessa är exempel, inte en begränsad lista:
+
+| Idé             | Vad det innebär                                                        |
+| --------------- | ---------------------------------------------------------------------- |
+| Persistent chat | Spara Socket.io-meddelanden i MongoDB, hämta historik vid `join`       |
+| Rate limiting   | Begränsa antal requests per IP på auth-routes med `express-rate-limit` |
+| PWA             | Gör appen installerbar (issue 100)                                     |
+| Avancerad CI    | Branch protection rules (issue 102)                                    |
+| Eget förslag    | Vad du hittat på vägen som känns värdefullt att bygga                  |
+
+---
+
+## Redovisning
+
+Se till att följande frågor besvaras i din redovisningstext i `report/kmom10.md`.
+
+1. För varje krav du implementerat (grundkrav och krav 1–3), skriver du ett textstycke om ca 5-10 meningar där du beskriver vad du gjort och hur du tänkt. Poängsättningen tar sin start i din text så se till att skriva väl för att undvika poängavdrag. Använd rubriker så din text blir lätt att läsa.
+
+   **Missar du att skriva/dokumentera din lösning så blir det 0 poäng. Du kan inte komplettera en inlämning för att få högre betyg.**
+
+2. Skriv ett allmänt stycke om hur projektet gick att genomföra. Problem/lösningar/strul/enkelt/svårt/snabbt/lång tid, etc. Var projektet lätt eller svårt? Tog det lång tid? Vad var svårt och vad gick lätt? Var det ett bra och rimligt projekt för denna kursen?
+
+3. Vilken är din TIL för detta kmom?
+
+4. Vilken är din TIL för kursen som helhet?
+
+5. (Valfritt) Avsluta med ett sista stycke med dina tankar om kursen och vad du anser om materialet och handledningen (ca 5-10 meningar). Återkoppla till lärarteamet och förslå eventuella förbättringsförslag till kommande kurstillfällen.
+
+6. (Valfritt) Är du nöjd/missnöjd? Kommer du att rekommendera kursen till dina vänner/kollegor? På en skala 1-10, vilket betyg ger du kursen?
+
+---
+
+## Slutpresentation och redovisningsvideo
+
+Du skall förbereda och utföra en slutpresentation av ditt projekt. Du kan läsa hur du kan förbereda dig i dokumentet "[Planera din slutpresentation](https://bth-node.github.io/studieguide/planera-din-slutpresentation/)".
+
+Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera din PR och lägg in länken). Detta kan du göra dagen efter projektets deadline. Läs mer om hur du kan [spela in en redovisningsvideo med OBS](https://bth-node.github.io/studieguide/redovisningsvideo-spela-in/).
+
+---
+
+## Inlämning
+
+1. Stäng de GitHub-issues som du har löst klart.
+2. Skriv klart din redovisningstext i `report/kmom10.md`.
+3. Committa, tagga och pusha:
+
+  ```bash
+  git add .
+  git commit -m "kmom10 done"
+  git tag kmom10
+  git push origin main --tags
+  ```
+
+4. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
+
+Läraren läser din redovisningstext via `report/kmom10.md` i PR:en och bedömer vilka krav som är uppfyllda.
+
+{/*
+
+## Tidigare version av kmom10 (sparad för referens)
+
+Den ursprungliga versionen hade en enklare struktur utan betygsnivåer:
+
+- Kontrollera att du är klar (samma checklista som grundkravet ovan)
+- Valfria issues 100-103 listades här — de är nu exempel under Krav 3
+- Redovisningstext med fyra frågor — bevarade ovan med tillägg
+
+## Tankar om framtida revision
+
+Från session-diskussion (2026-05-18):
+
+Alternativ riktning för kmom10: examinerande projekt där studenten bygger en ny backend
+för en given domän (t.ex. anslagstavla, forum) istället för att bygga vidare på kursapplikationen.
+
+Grundkrav i det scenariot:
+
+- REST API med CRUD
+- MongoDB med minst två modeller
+- JWT-autentisering
+- /api/doc
+
+Optionella nivåer i det scenariot:
+
+- Nivå 1 (C): Koppla upp mot en gemensam chattserver via Socket.io — studentens server
+  deltar som klient. Testar Socket.io från klientperspektiv.
+- Nivå 2 (B): AI-integration — lägg till en AI-bot via Anthropic/OpenAI, svaret
+  broadcastas via Socket.io eller SSE.
+- Nivå 3 (A): Eget val med motivering.
+
+Påskägg i frontenden: frontenden får dolda funktioner (typing indicator, rooms, socket auth)
+som serverimplementationer kan låsa upp. Kräver planerade ändringar i public/app.js.
+Tas upp vid nästa kursrevision.
+*/}
