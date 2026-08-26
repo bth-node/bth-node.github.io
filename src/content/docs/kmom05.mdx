@@ -1,5 +1,5 @@
 ---
-title: 'kmom05: Databas och autentisering ⚠️'
+title: 'kmom05: Databas och autentisering'
 description: Koppla applikationen till MongoDB och bygg ett komplett autentiseringssystem med bcrypt, JWT och httpOnly-cookies.
 revision:
   2026-05-13: (A, mos) Första versionen.
@@ -44,7 +44,7 @@ Den här veckan introduceras flera koncept som är nya och tätt sammankopplade 
 
 | Läs innan | Titel | Varför |
 |---|---|---|
-| Issue 05 | [MDN — Introduction to databases](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Website_databases) | Ger kontext till varför vi behöver en databas och hur dokumentdatabaser skiljer sig från SQL |
+| Issue 05 | [MongoDB — NoSQL Explained](https://www.mongodb.com/resources/basics/databases/nosql-explained) | Ger kontext till varför vi behöver en databas och hur dokumentdatabaser skiljer sig från SQL |
 | Issue 05 | [Mongoose — Getting started](https://mongoosejs.com/docs/index.html) | Den officiella quickstart visar schema, model och grundläggande queries |
 | Issue 06 | [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) | Förklarar varför bcrypt är rätt val och vad som händer när det görs fel |
 | Issue 06 | [jwt.io — Introduction to JSON Web Tokens](https://jwt.io/introduction) | Visuell förklaring av token-strukturen — header, payload och signatur |
@@ -58,27 +58,27 @@ Den här veckan introduceras flera koncept som är nya och tätt sammankopplade 
 | jsonwebtoken | [npmjs.com/package/jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) |
 | MDN — Set-Cookie | [MDN — Set-Cookie header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie) |
 
+{/*
 ## Quiz
 
 När du är klar med veckans issues gör du quizen som finns i Canvas.
 
-Quizen för kmom05 testar om du förstår vad MongoDB är för typ av databas, hur ett Mongoose-schema fungerar, varför lösenord hashas innan de sparas, vad en JWT innehåller, varför `httpOnly`-flaggan är viktig och vad `bcrypt.compare()` faktiskt gör — och ett begrepp från kursens programmeringsfilosofi.
+Quizen för kmom05 testar om du förstår vad MongoDB är för typ av databas, hur ett Mongoose-schema fungerar, varför lösenord hashas innan de sparas, vad en JWT innehåller, varför `httpOnly`-flaggan är viktig och vad `bcrypt.compare()` faktiskt gör.
+*/}
 
 ## Redovisningstext
 
 Skriv din redovisningstext i `report/kmom05.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
-1. Beskriv hur du kopplade applikationen till MongoDB. Vad är en Mongoose-modell och vad används den till i ditt projekt?
+1. Du kopplade på MongoDB, byggde lösenordshantering och JWT. Vilket steg krävde mest omtanke eller kändes mest osäkert — och vad gjorde att det klarnade (eller inte)?
 
-2. Förklara hur lösenordshantering fungerar i din implementation: vad händer när en användare registrerar sig, och vad händer när de loggar in? Varför sparas aldrig lösenordet i klartext?
+2. Om du skulle förklara veckans viktigaste nya koncept för en studiekompis som inte hunnit läsa på — vad skulle du säga, och vilket exempel skulle du använda från din egen kod?
 
-3. Vad är en JWT och vad innehåller den i ditt projekt? Varför lagras token i en httpOnly-cookie snarare än i `localStorage`?
+3. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
 
-4. Beskriv hur ditt `authMiddleware` fungerar steg för steg. Vad händer om cookien saknas, och vad händer om token är giltig?
+4. Gjorde du något som var valbart i kmomet? Berätta om ditt arbete.
 
-5. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
-
-6. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
+5. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
 ## Inlämning
 
@@ -89,11 +89,11 @@ Skriv din redovisningstext i `report/kmom05.md` i ditt repo. Frågorna nedan är
 ```bash
 git add .
 git commit -m "kmom05 done"
-git tag kmom05
+git tag v5.0.0
 git push origin main --tags
 ```
 
-
+Behöver du uppdatera din inlämning efteråt? Committa ändringen och tagga om med en ökad patch-version, t.ex. `v5.0.1`.
 
 ## Kommentarer & Noteringar
 
