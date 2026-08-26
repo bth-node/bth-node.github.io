@@ -1,5 +1,5 @@
 ---
-title: 'kmom04: Express, REST och verktyg ⚠️'
+title: 'kmom04: Express, REST och verktyg'
 description: Kom igång med Node.js-backendutveckling — Express-server, REST API och verktyg för kodkvalitet.
 revision:
   2026-05-13: (A, mos) Första versionen.
@@ -11,6 +11,10 @@ import YouTube from '@components/YouTube.astro';
 Den här veckan kommer du igång med Node.js-backendutveckling. Du skapar din första Express-server, bygger ett REST API och sätter upp verktyg för kodkvalitet — linting, formattering, CI och automatiserade tester. Veckan lägger grunden för resten av kursen.
 
 ## Kom igång
+
+:::danger
+Kursrepot är ännu inte släppt. Du kan inte börja jobba med den här delen av kursen än.
+:::
 
 Ditt repo är förberett och finns på GitHub. Klona det till din dator:
 
@@ -40,9 +44,9 @@ Du är välkommen att skriva egna kommentarer i varje issue medan du arbetar —
 
 Valfria issues — gör dem om du vill utforska vidare:
 
-| Issue | Namn   | Vad du gör                                                    |
-| ----- | ------ | ------------------------------------------------------------- |
-| 04e   | `client` | Bygg en terminalklient mot ditt API med `@dbwebb/tui`       |
+| Issue | Namn     | Vad du gör                                            |
+| ----- | -------- | ----------------------------------------------------- |
+| 04e   | `client` | Bygg en terminalklient mot ditt API med `@dbwebb/tui` |
 
 ## Föreläsningar
 
@@ -77,43 +81,44 @@ Titta igenom föreläsningarna innan du börjar med respektive issue — de är 
 | Prettier alternativ | [prettier.io/docs/en/options](https://prettier.io/docs/en/options.html)                      |
 | Vitest API          | [vitest.dev/api](https://vitest.dev/api/)                                                    |
 | supertest           | [github.com/ladjs/supertest](https://github.com/ladjs/supertest)                             |
+| Bruno docs          | [docs.usebruno.com](https://docs.usebruno.com/)                                              |
+| Pino API            | [github.com/pinojs/pino/docs/api.md](https://github.com/pinojs/pino/blob/main/docs/api.md)   |
 
+{/*
 ## Quiz
 
 När du är klar med veckans issues gör du quizen som finns i Canvas. Den är ett snabbt sätt att stämma av att de viktigaste koncepten har fastnat.
 
-Quizen för kmom04 testar dina kunskaper om HTTP-metoder och statuskoder, vad verktygen `nodemon` och `eslint` gör, vad `"type": "module"` innebär, hur man testar ett API med Bruno, vad kodtäckning faktiskt mäter — och ett begrepp från kursens programmeringsfilosofi.
+Quizen för kmom04 testar dina kunskaper om HTTP-metoder och statuskoder, vad verktygen `nodemon` och `eslint` gör, vad `"type": "module"` innebär, hur man testar ett API med Bruno och vad kodtäckning faktiskt mäter.
+*/}
 
 ## Redovisningstext
 
 Skriv din redovisningstext i `report/kmom04.md` i ditt repo. Frågorna nedan är en guide — du behöver inte besvara dem en i taget utan får gärna väva in dem i en sammanhängande text. Berätta om hur det kändes att jobba igenom kmomet, om du fick några aha-upplevelser längs vägen och om något var svårt eller förvirrande. Det är den reflektionen som gör redovisningstexten värdefull, inte bara att du listar att du gjort sakerna.
 
-1. Beskriv hur du strukturerade din Express-server. Varför är det en bra idé att dela upp `server.js` (app-konfiguration) och `index.js` (start och livscykel) i separata filer?
+1. Du satte upp server.js/index.js-splitten, ett REST-API och CI. Vilket av dessa kändes mest meningsfullt eller mest förvirrande att bygga, och varför?
 
-2. Vad är REST? Förklara skillnaden mellan `GET`, `POST`, `PATCH` och `DELETE` och ge ett konkret exempel från ditt API på när var och en används.
+2. Om du skulle förklara veckans viktigaste nya koncept för en studiekompis som inte hunnit läsa på — vad skulle du säga, och vilket exempel skulle du använda från din egen kod?
 
-3. Du lade till linting och automatiska tester i CI. Vad är syftet med GitHub Actions i det här sammanhanget, och vad händer om lintern hittar ett fel?
+3. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
 
-4. Vad är ett integrationstest och hur skiljer det sig från ett enhetstest? Vad testade du i issue 04d och varför valdes just de sakerna?
-
-5. Välj ett stycke om Design patterns eller Programming philosophy från veckans issues. Förklara konceptet med egna ord och berätta varför du tyckte det var intressant eller relevant.
-
-6. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
+4. Vad är din viktigaste insikt (TIL — Today I Learned) från det här kursmomentet?
 
 ## Inlämning
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom04.md`.
-3. Committa, tagga och pusha:
+3. Kör `npm run lint` och `npm run format` så att koden är ren.
+4. Committa, tagga och pusha:
 
 ```bash
 git add .
 git commit -m "kmom04 done"
-git tag kmom04
+git tag v4.0.0
 git push origin main --tags
 ```
 
-
+Behöver du uppdatera din inlämning efteråt? Committa ändringen och tagga om med en ökad patch-version, t.ex. `v4.0.1`.
 
 ## Kommentarer & Noteringar
 
