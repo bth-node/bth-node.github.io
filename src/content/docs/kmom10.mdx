@@ -1,5 +1,5 @@
 ---
-title: 'kmom10: Projekt och examination ⚠️'
+title: 'kmom10: Projekt och examination'
 description: Examinerande kursmomen över två veckor — grundkrav för godkänt och tre optionella krav för högre betyg.
 revision:
   2026-05-13: (A, mos) Första versionen.
@@ -11,6 +11,10 @@ import Figure from '@components/CustomFigure.astro';
 import YouTube from '@components/YouTube.astro';
 
 Det här kursmomentet löper över två veckor och är kursens examinerande del. Du visar att du behärskar det du har byggt, skriver en sammanhållen redovisning av hela kursens gång och väljer hur djupt du vill gå beroende på vilket betyg du siktar på.
+
+:::danger
+Kursrepot är ännu inte släppt. Du kan inte börja jobba med den här delen av kursen än.
+:::
 
 ---
 
@@ -183,13 +187,15 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
   ```bash
   git add .
   git commit -m "kmom10 done"
-  git tag kmom10
+  git tag v10.0.0
   git push origin main --tags
   ```
 
 4. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
 
 Läraren läser din redovisningstext via `report/kmom10.md` i PR:en och bedömer vilka krav som är uppfyllda.
+
+Behöver du uppdatera din inlämning efteråt? Committa ändringen, tagga om med en ökad patch-version (t.ex. `v10.0.1`) och pusha — PR:en uppdateras automatiskt.
 
 {/*
 
