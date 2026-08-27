@@ -1,0 +1,47 @@
+---
+title: "Linux: Installera Docker"
+description: Installera Docker Engine och Compose-plugin på Linux.
+sidebar:
+    order: 196
+---
+
+## Docker Engine, inte Docker Desktop
+
+På Linux kör containrar direkt i din befintliga kernel — du behöver ingen virtualisering och därmed inget Desktop-verktyg. Installera istället **Docker Engine** med kommandoradsverktygen, samma sätt som på en server.
+
+## Installera
+
+Docker tillhandahåller ett installationsscript som känner av din distribution och installerar rätt paket åt dig. Det är [officiellt rekommenderat av Docker](https://docs.docker.com/engine/install/#server) för test- och utvecklingsmiljöer (i produktion installerar man normalt paketen manuellt, men det är inget vi behöver bry oss om i kursen):
+
+```bash title="Installera Docker Engine med det officiella scriptet"
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+Fungerar inte scriptet för din distribution, se [Dockers officiella installationsguide](https://docs.docker.com/engine/install/) och välj din distribution i menyn istället.
+
+## Kör docker utan sudo
+
+Som standard behöver du `sudo` för varje `docker`-kommando. Lägg till din användare i gruppen `docker` för att slippa det:
+
+```bash title="Lägg till din användare i docker-gruppen"
+sudo usermod -aG docker $USER
+```
+
+Logga ut och in igen (eller starta om terminalen) för att ändringen ska gälla.
+
+## Verifiera
+
+```bash title="Kontrollera att Docker är installerat och kör"
+docker --version
+docker compose version
+docker run hello-world
+```
+
+Om `hello-world`-containern skriver ut ett meddelande fungerar allt.
+
+## Vanliga problem
+
+**"permission denied" mot Docker-socketen** — du har inte loggat ut/in efter att du lades till i `docker`-gruppen. Kör `groups` för att se om `docker` finns i listan, annars logga ut och in igen.
+
+**Docker-tjänsten kör inte** — kontrollera status med `sudo systemctl status docker` och starta den vid behov med `sudo systemctl start docker`. Vill du att den ska starta automatiskt vid boot: `sudo systemctl enable docker`.

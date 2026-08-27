@@ -1,0 +1,40 @@
+---
+title: "Docker"
+description: Installera Docker för att köra MongoDB i en container.
+sidebar:
+    order: 190
+---
+
+Från och med kmom05 använder du **Docker** för att köra MongoDB. Istället för att installera en databasserver direkt på din dator paketeras MongoDB som en **container** — en isolerad, färdigkonfigurerad miljö som du startar och stoppar med ett par kommandon.
+
+## Docker och Docker Compose
+
+**Docker** är verktyget som kör containrar. En container är en isolerad process som paketerar en applikation (t.ex. MongoDB) tillsammans med allt den behöver för att köra, utan att du behöver installera det själv.
+
+**Docker Compose** är ett verktyg ovanpå Docker som beskriver vilka containrar ett projekt behöver i en konfigurationsfil, `docker-compose.yml`. I kursens repo finns redan en sådan fil — du behöver bara starta den:
+
+```bash
+docker-compose up -d
+```
+
+Du jobbar med Docker enbart via terminalen i kursen — samma `docker`- och `docker compose`-kommandon oavsett operativsystem eller hur Docker är installerat under huven.
+
+## Installation
+
+Hur du installerar Docker skiljer sig åt mellan operativsystem. Välj din guide:
+
+* [Windows (WSL): Installera Docker](/labbmiljo/docker-windows)
+* [Mac: Installera Docker](/labbmiljo/docker-mac)
+* [Linux: Installera Docker](/labbmiljo/docker-linux)
+
+## Verifiera din installation
+
+Oavsett operativsystem, verifiera att allt fungerar med:
+
+```bash title="Kontrollera att Docker är installerat och kör"
+docker --version
+docker compose version
+docker run hello-world
+```
+
+`hello-world` är en minimal container vars enda uppgift är att skriva ut ett bekräftelsemeddelande och sedan avsluta — fungerar den är din installation redo.

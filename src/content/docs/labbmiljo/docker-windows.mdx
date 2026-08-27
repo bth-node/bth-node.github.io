@@ -1,0 +1,45 @@
+---
+title: "Windows: Installera Docker"
+description: Installera Docker Desktop med WSL2-integration på Windows.
+sidebar:
+    order: 192
+---
+
+Om du kör terminalen via WSL (se [Windows: Terminal och pakethantering](/labbmiljo/terminal-windows)) installerar du Docker via **Docker Desktop**. Windows kernel kan inte köra Linux-containrar direkt, så Docker Desktop sköter det åt dig och kopplar sedan ihop det med din WSL-terminal.
+
+## Förutsättning
+
+Du behöver redan ha WSL2 installerat och en Ubuntu-terminal igång, se [Windows: Terminal och pakethantering](/labbmiljo/terminal-windows).
+
+## Installera Docker Desktop
+
+1. Ladda ner [Docker Desktop för Windows](https://www.docker.com/products/docker-desktop/) och kör installationsprogrammet.
+2. Se till att alternativet **"Use WSL 2 instead of Hyper-V"** är ikryssat under installationen — det är default på nyare Windows-versioner.
+3. Starta om datorn om installationsprogrammet ber om det.
+4. Starta Docker Desktop från Start-menyn. En val-ikon dyker upp i aktivitetsfältet (systray) när det är igång — det behöver vara igång i bakgrunden varje gång du ska köra `docker`-kommandon.
+
+## Koppla ihop Docker Desktop med din WSL-distribution
+
+1. Öppna Docker Desktop → **Settings → Resources → WSL Integration**.
+2. Se till att integrationen är påslagen för din Ubuntu-distribution (den du använder som terminal).
+3. Klicka **Apply & Restart**.
+
+Nu kan du köra `docker`- och `docker compose`-kommandon direkt i din vanliga Ubuntu-terminal (WSL) — du behöver aldrig öppna Docker Desktops gränssnitt förutom för att kontrollera att det kör.
+
+## Verifiera
+
+Öppna din Ubuntu-terminal (WSL) och kör:
+
+```bash title="Kontrollera att Docker är installerat och kör"
+docker --version
+docker compose version
+docker run hello-world
+```
+
+Om `hello-world`-containern skriver ut ett meddelande fungerar allt.
+
+## Vanliga problem
+
+**"Cannot connect to the Docker daemon"** — Docker Desktop är inte igång. Starta det från Start-menyn och vänta tills ikonen i systrayn visar att det är klart.
+
+**WSL-distributionen syns inte i Settings → Resources → WSL Integration** — kontrollera att du har WSL2 (inte WSL1) installerat: `wsl --list --verbose` ska visa version 2 för din distribution.

@@ -1,0 +1,33 @@
+---
+title: "Mac: Installera Docker"
+description: Installera Docker Desktop på Mac.
+sidebar:
+    order: 194
+---
+
+## Installera Docker Desktop
+
+macOS kan inte köra Linux-containrar direkt i sin kernel, så precis som på Windows installerar du **Docker Desktop** — det sköter virtualiseringen åt dig.
+
+1. Ladda ner [Docker Desktop för Mac](https://www.docker.com/products/docker-desktop/) — välj rätt version beroende på om din Mac har Apple Silicon (M1/M2/M3/M4) eller Intel-processor.
+2. Installera genom att dra Docker-ikonen till din Applications-mapp, precis som andra Mac-appar.
+3. Starta Docker Desktop från Launchpad eller Spotlight (`Command + Space`, skriv "Docker").
+4. En val-ikon dyker upp i menyraden när Docker är igång — det behöver vara igång i bakgrunden varje gång du ska köra `docker`-kommandon.
+
+Du behöver aldrig öppna själva Docker Desktop-gränssnittet i kursen — alla kommandon du behöver körs i terminalen.
+
+## Verifiera
+
+```bash title="Kontrollera att Docker är installerat och kör"
+docker --version
+docker compose version
+docker run hello-world
+```
+
+Om `hello-world`-containern skriver ut ett meddelande fungerar allt.
+
+## Vanliga problem
+
+**"Cannot connect to the Docker daemon"** — Docker Desktop är inte igång. Starta det och vänta tills val-ikonen i menyraden slutar animera.
+
+**Installationen känns långsam/tung** — Docker Desktop drar en del resurser i bakgrunden. Det är normalt, men du kan stänga det (klicka på val-ikonen → Quit Docker Desktop) när du inte jobbar med kursen, och starta det igen när du behöver det.
