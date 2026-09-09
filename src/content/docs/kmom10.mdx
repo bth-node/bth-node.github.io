@@ -182,7 +182,8 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom10.md`.
-3. Committa, tagga och pusha:
+3. (Valfritt) Kör en självkoll: `npm run check -- kmom10` — kontrollerar att redovisningstexten är klar och att alla obligatoriska issues är stängda, samma kontroll som körs automatiskt när du öppnar PR:en nedan.
+4. Committa, tagga och pusha:
 
   ```bash
   git add .
@@ -191,13 +192,19 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
   git push origin main --tags
   ```
 
-4. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
+5. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
 
 Läraren läser din redovisningstext via `report/kmom10.md` i PR:en och bedömer vilka krav som är uppfyllda.
 
 Behöver du uppdatera din inlämning efteråt? Committa ändringen, tagga om med en ökad patch-version (t.ex. `v10.0.1`) och pusha — PR:en uppdateras automatiskt.
 
 {/*
+
+## TODO — nästa revision
+
+- Fundera på att dela upp Krav 1 (Terminalklienten) i två delar
+- Ta bort Krav 2 (Tester och kodtäckning)
+- Dela upp kravet "Utöka applikationen" på ett tydligare sätt
 
 ## Tidigare version av kmom10 (sparad för referens)
 
