@@ -182,8 +182,9 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom10.md`.
-3. (Valfritt) Kör en självkoll: `npm run check -- kmom10` — kontrollerar att redovisningstexten är klar och att alla obligatoriska issues är stängda, samma kontroll som körs automatiskt när du öppnar PR:en nedan.
-4. Committa, tagga och pusha:
+3. Kör `npm test` (och `npm run test:coverage` om du gjort Krav 2) för att se att dina tester passerar.
+4. (Valfritt) Kör en självkoll: `npm run check -- kmom10` — kontrollerar att redovisningstexten är klar och att alla obligatoriska issues är stängda, samma kontroll som körs automatiskt när du öppnar PR:en nedan.
+5. Committa, tagga och pusha:
 
   ```bash
   git add .
@@ -192,7 +193,7 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
   git push origin main --tags
   ```
 
-5. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
+6. Öppna en pull request från `main` till `bth/submit/kmom10` i ditt repo.
 
 Läraren läser din redovisningstext via `report/kmom10.md` i PR:en och bedömer vilka krav som är uppfyllda.
 

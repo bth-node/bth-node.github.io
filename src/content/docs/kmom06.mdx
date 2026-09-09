@@ -94,7 +94,9 @@ Skriv din redovisningstext i `report/kmom06.md` i ditt repo. Frågorna nedan är
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom06.md`.
-3. Committa, tagga och pusha:
+3. Kör `npm test` för att se att dina tester passerar.
+4. (Valfritt) Kör en självkoll för hela projektet: `npm run check -- kmom04 kmom05 kmom06` — samma kombinerade kontroll som körs automatiskt när du öppnar PR:en nedan.
+5. Committa, tagga och pusha:
 
 ```bash
 git add .
@@ -103,7 +105,7 @@ git tag v6.0.0
 git push origin main --tags
 ```
 
-4. Öppna en pull request från `main` till `bth/submit/kmom06` i ditt repo.
+6. Öppna en pull request från `main` till `bth/submit/kmom06` i ditt repo.
 
 Läraren läser din redovisningstext via `report/kmom06.md` i PR:en.
 
