@@ -5,6 +5,7 @@ revision:
   2026-05-13: (A, mos) Första versionen.
   2026-05-18: (B, mos) Ny struktur med grundkrav och tre betygsnivåer.
   2026-05-19: (C, mos) Utökningar, Bruno-krav, redovisning och presentation.
+  2026-09-10: (D, mos) Krav 2 bytt från kodtäckningsprocent till konkreta felvägsscenarier (issue 10c). Krav 3 "Eget val" ersatt med TUI-krav för 10a/10b (issue 10d) — tydligare beroenden, inget krav på att andra optionella krav är klara. Terminalklienten fick ett eget issue (10e) med den detaljerade beskrivningen. Tabellen visar inte längre betyg per krav eftersom kraven är fristående.
 ---
 
 import Figure from '@components/CustomFigure.astro';
@@ -12,141 +13,32 @@ import YouTube from '@components/YouTube.astro';
 
 Det här kursmomentet löper över två veckor och är kursens examinerande del. Du visar att du behärskar det du har byggt, skriver en sammanhållen redovisning av hela kursens gång och väljer hur djupt du vill gå beroende på vilket betyg du siktar på.
 
-:::danger
-Kursrepot är ännu inte släppt. Du kan inte börja jobba med den här delen av kursen än.
-:::
-
 ---
 
 ## Grundkrav — betyg D och E
 
-För ett godkänt betyg ska hela din applikation fungera och alla obligatoriska issues vara avslutade.
+För ett godkänt betyg ska hela din applikation fungera och obligatoriska issues från kmom04, kmom05, kmom06 skall vara implementerade.
 
-### Applikationen ska fungera
+Dessutom skall du implementera följande obligatoriska krav, som var sitt GitHub-issue i ditt repo:
 
-Gå igenom listan och verifiera att varje del fungerar:
+| Issue | Namn            | Vad du gör                                                  |
+| ----- | --------------- | ------------------------------------------------------------ |
+| 10a   | `search-users`   | Utöka `GET /api/users` med valfri sökning på namn            |
+| 10b   | `profile-update` | Lägg till `PATCH /api/me` för att uppdatera namn och/eller avatar |
 
-| Funktionalitet                                        | Issue |
-| ----------------------------------------------------- | ----- |
-| Frontenden laddas via Express                         | 03    |
-| `GET /health` returnerar `{ status: 'ok' }`           | 03    |
-| `GET /api/doc` returnerar API-dokumentation           | 04b   |
-| `GET /api/users` returnerar användare från databasen  | 05    |
-| Registrering skapar en ny användare                   | 06    |
-| Inloggning sätter en httpOnly-cookie                  | 06b   |
-| `GET /api/me` kräver inloggning                       | 07    |
-| Meddelanden kan skapas och hämtas                     | 07b   |
-| Meddelanden kan redigeras och raderas av ägaren       | 07c   |
-| Realtidschatten fungerar mellan flera webbläsarflikar | 08    |
-| Live-flödet uppdateras utan omladdning                | 09    |
-
-### Utöka applikationen
-
-Lägg till två konkreta utökningar i din applikation. Beskriv implementationen och dina designbeslut i redovisningstexten.
-
-**Sökning på användare**
-
-Utöka `GET /api/users` med en valfri query-parameter `name` som filtrerar resultatet:
-
-```
-GET /api/users?name=alice   → returnerar användare vars namn innehåller "alice" (case-insensitive)
-GET /api/users              → returnerar alla användare (oförändrat beteende)
-```
-
-Verifiera att sökningen fungerar i Bruno och att `GET /api/users` utan parameter fortfarande returnerar alla användare.
-
-När du lägger till `GET /api/users?name=` i `/api/doc` låser frontenden upp en sökruta i Users-fliken — du kan då testa sökningen direkt i webbläsaren.
-
-**Profiluppdatering**
-
-Lägg till `PATCH /api/me` — en skyddad route som låter den inloggade användaren uppdatera sitt namn och/eller sin avatar:
-
-```
-PATCH /api/me  { "name": "Alice B" }            → uppdaterar namn, behåller avatar
-PATCH /api/me  { "avatar": "bob" }              → uppdaterar avatar, behåller namn
-PATCH /api/me  { "name": "Alice B", "avatar": "bob" }  → uppdaterar båda
-```
-
-Routen kräver inloggning via `authMiddleware`. Eftersom det är PATCH ska bara de fält som skickas med uppdateras — saknas ett fält ska det befintliga värdet behållas. Returnera det uppdaterade användardokumentet.
-
-När du lägger till `PATCH /api/me` i `/api/doc` låser frontenden upp en "Edit profile"-knapp i Dashboard-fliken — du kan då testa profiluppdateringen direkt i webbläsaren.
-
-Lägg till två Bruno-filer i `bruno/dashboard/` för att verifiera den partiella uppdateringen:
-
-| Fil | Body | Vad den verifierar |
-|---|---|---|
-| `patch-me-name.bru` | `{ "name": "..." }` | `res.status` är 200, `res.body.name` är det nya värdet |
-| `patch-me-avatar.bru` | `{ "avatar": "..." }` | `res.status` är 200, `res.body.avatar` är det nya värdet |
-
-Använd `assert`-blocket i Bruno för att verifiera svaret — se befintliga filer i `bruno/` som referens.
+Beskriv implementationen och dina designbeslut för respektive krav i redovisningstexten.
 
 ---
 
 ## Optionella krav — betyg C, B och A
 
-Varje krav höjer betyget ett steg. Krav 1 och krav 2 är fristående — du behöver inte göra ett för att göra det andra. Krav 3 kräver att båda är avklarade. Beskriv vad du gjort och varför i redovisningstexten.
+Varje krav du klarar höjer betyget ett steg, upp till betyg A. Kraven är fristående av varandra — det finns ingen ordning du måste göra dem i, och inget krav förutsätter att ett annat är klart. Varje krav listar sina egna, konkreta issue-beroenden. Beskriv vad du gjort och varför i redovisningstexten.
 
----
-
-### Krav 1: Terminalklienten
-
-Bygg en fungerande terminalklient mot ditt API med `@dbwebb/tui`.
-
-**Grundkrav för klienten:**
-
-Klara issue 04e (TUI-klient) plus minst **två** av följande:
-
-| Issue | Kommando                            | Vad det testar                                  |
-| ----- | ----------------------------------- | ----------------------------------------------- |
-| 07a   | `backend login` / `backend logout`  | POST med auth, httpOnly-cookie som raw header   |
-| 07d   | `backend messages` / `backend post` | Authenticated GET och POST                      |
-| 09b   | `backend stream`                    | SSE-konsumtion med `for await`, AbortController |
-| 08b   | `backend chat`                      | socket.io-client, Promise, SIGINT, readline     |
-
-Alla valda kommandon ska fungera mot din körande server. Visa och beskriv dem i redovisningstexten.
-
----
-
-### Krav 2: Tester och kodtäckning
-
-Utöka testsviten från issue 04d till att täcka fler delar av applikationen.
-
-**Krav:**
-
-- Nå minst **70 % radtäckning** på route-filerna (`src/routes/`) med `npm run test:coverage`
-- Skriv tester för minst **två** av följande:
-  - `POST /auth/register` — lyckat registrering, duplikat e-post (409), saknade fält (400)
-  - `POST /auth/login` — lyckad inloggning, fel lösenord (401)
-  - `GET /api/messages` — kräver inloggning (401), returnerar rätt data
-  - `POST /api/messages` — skapar meddelande, avvisar tomt text (400)
-
-Testerna ska köra med `npm test` utan beroende av en riktig MongoDB-instans — använd `mongodb-memory-server` (se issue 103) eller mocka anslutningen.
-
-Beskriv vad du testade och varför du valde just de fallen i redovisningstexten.
-
----
-
-### Krav 3: Eget val
-
-För att lösa detta krav måste du även ha löst krav 1 och krav 2.
-
-Välj och implementera en backend-feature som inte ingår i de obligatoriska issues. Du bestämmer vad — men du måste motivera valet och dokumentera implementationen.
-
-**Krav:**
-
-- Funktionen ska vara implementerad och fungera
-- Beskriv vad du valde och varför i redovisningstexten
-- Reflektera över de designbeslut du gjorde
-
-**Inspiration** — dessa är exempel, inte en begränsad lista:
-
-| Idé             | Vad det innebär                                                        |
-| --------------- | ---------------------------------------------------------------------- |
-| Persistent chat | Spara Socket.io-meddelanden i MongoDB, hämta historik vid `join`       |
-| Rate limiting   | Begränsa antal requests per IP på auth-routes med `express-rate-limit` |
-| PWA             | Gör appen installerbar (issue 100)                                     |
-| Avancerad CI    | Branch protection rules (issue 102)                                    |
-| Eget förslag    | Vad du hittat på vägen som känns värdefullt att bygga                  |
+| Krav                       | Issue(s)                                                |
+| --------------------------- | -------------------------------------------------------- |
+| Terminalklienten             | `10e` (`terminal-client`)                                |
+| TUI för sökning och profil   | `10d` (`tui-search-and-profile`), kräver `04e` och `07a` |
+| Tester                       | `10c` (`test-coverage`)                                  |
 
 ---
 
@@ -182,7 +74,7 @@ Spela in en redovisningsvideo och lägg länken till videon i din PR (redigera d
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom10.md`.
-3. Kör `npm test` (och `npm run test:coverage` om du gjort Krav 2) för att se att dina tester passerar.
+3. Kör `npm test` för att se att dina tester passerar.
 4. (Valfritt) Kör en självkoll: `npm run check -- kmom10` — kontrollerar att redovisningstexten är klar och att alla obligatoriska issues är stängda, samma kontroll som körs automatiskt när du öppnar PR:en nedan.
 5. Committa, tagga och pusha:
 
@@ -203,41 +95,6 @@ Behöver du uppdatera din inlämning efteråt? Committa ändringen, tagga om med
 
 ## TODO — nästa revision
 
-- Fundera på att dela upp Krav 1 (Terminalklienten) i två delar
-- Ta bort Krav 2 (Tester och kodtäckning)
-- Dela upp kravet "Utöka applikationen" på ett tydligare sätt
+- Kör en riktig studentomgång av 10c/10d/10e innan de låses fast — utvärdera om felvägsscenarierna i 10c är rätt svårighetsgrad och om 10d:s beroende på både 04e och 07a känns rimligt
 
-## Tidigare version av kmom10 (sparad för referens)
-
-Den ursprungliga versionen hade en enklare struktur utan betygsnivåer:
-
-- Kontrollera att du är klar (samma checklista som grundkravet ovan)
-- Valfria issues 100-103 listades här — de är nu exempel under Krav 3
-- Redovisningstext med fyra frågor — bevarade ovan med tillägg
-
-## Tankar om framtida revision
-
-Från session-diskussion (2026-05-18):
-
-Alternativ riktning för kmom10: examinerande projekt där studenten bygger en ny backend
-för en given domän (t.ex. anslagstavla, forum) istället för att bygga vidare på kursapplikationen.
-
-Grundkrav i det scenariot:
-
-- REST API med CRUD
-- MongoDB med minst två modeller
-- JWT-autentisering
-- /api/doc
-
-Optionella nivåer i det scenariot:
-
-- Nivå 1 (C): Koppla upp mot en gemensam chattserver via Socket.io — studentens server
-  deltar som klient. Testar Socket.io från klientperspektiv.
-- Nivå 2 (B): AI-integration — lägg till en AI-bot via Anthropic/OpenAI, svaret
-  broadcastas via Socket.io eller SSE.
-- Nivå 3 (A): Eget val med motivering.
-
-Påskägg i frontenden: frontenden får dolda funktioner (typing indicator, rooms, socket auth)
-som serverimplementationer kan låsa upp. Kräver planerade ändringar i public/app.js.
-Tas upp vid nästa kursrevision.
 */}

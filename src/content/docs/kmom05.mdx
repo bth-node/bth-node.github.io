@@ -21,6 +21,7 @@ Den här veckan använder du **Docker** för första gången, för att köra Mon
 | 06 | `register` | Hasha lösenord med bcrypt, utfärda JWT, `POST /auth/register` |
 | 06b | `login` | Verifiera inloggning, `POST /auth/login` och `POST /auth/logout`, seed-skript |
 | 07 | `middleware` | Bygg `authMiddleware`, skydda routes, implementera `GET /api/me` |
+| 07e | `test-coverage` | Skriv egna tester för `auth.js` och `dashboard.js` |
 
 Valfria issues — gör dem om du vill utforska vidare:
 
@@ -88,7 +89,7 @@ Skriv din redovisningstext i `report/kmom05.md` i ditt repo. Frågorna nedan är
 
 1. Stäng de GitHub-issues som du har löst klart.
 2. Skriv klart din redovisningstext i `report/kmom05.md`.
-3. Kör `npm test` för att se att dina tester passerar.
+3. Kör `npm run lint`, `npm run format` och `npm test` så att koden är ren och testerna passerar.
 4. (Valfritt) Kör en självkoll: `npm run check -- kmom05` — kontrollerar att redovisningstexten är klar och att alla obligatoriska issues är stängda.
 5. Committa, tagga och pusha:
 
