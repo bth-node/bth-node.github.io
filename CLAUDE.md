@@ -25,9 +25,8 @@ npm run astro -- --help
   auto-generated from the matching `src/content/docs/<dir>/` folder — e.g.
   `kmom01` sidebar entry ↔ `src/content/docs/kmom01/`).
 - `src/content/docs/` — the actual course content, `.md`/`.mdx` files, one
-  route per file. Course moments live in `kmomNN/index.mdx`. Other top-level
-  sections: `intro`, `labbmiljo`, `kursrepo`, `kom-igang`, `studieguide`,
-  `ovrigt`.
+  route per file. Course moments live in `kmomNN.mdx`. Other top-level
+  sections: `intro`, `labbmiljo`, `kursrepo`, `kom-igang`, `ovrigt`.
 - `src/assets/` — images referenced from content, organized in subfolders
   roughly matching the content section they illustrate (e.g. `kmom04/`,
   `kursrepo/`, `resp/`).
